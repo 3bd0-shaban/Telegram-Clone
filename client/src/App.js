@@ -1,22 +1,29 @@
-
+import { Route, Routes, useLocation } from 'react-router-dom'
+import { ROLES } from './Config/Roles';
+import { AnimatePresence } from 'framer-motion';
+import { SignIn, RequireAuth, Layout, PersistLogin, NotFounded, Home, ConfirmNumber } from './Components/Exports'
 function App() {
+  const location = useLocation();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img  className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AnimatePresence>
+      <Routes location={location} key={location.pathname}>
+        <Route element={<PersistLogin />}>
+          <Route path='/' element={<Layout />}>
+            <Route index path='/' element={<Home />} />
+            <Route path='signin' element={<SignIn />} />
+            <Route path='confirm' element={<ConfirmNumber />} />
+            <Route path='notfound' element={<NotFounded />} />
+            <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
+              <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Customer]} />}>
+              </Route>
+              <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+
+              </Route>
+            </Route>
+          </Route>
+        </Route>
+      </Routes>
+    </AnimatePresence>
   );
 }
 
