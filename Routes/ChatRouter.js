@@ -1,6 +1,6 @@
 import express from 'express';
 import { New_Chat, Get_User_Chats, Get_Chat_Messages, Get_Single_Chat, } from '../Controllers/ChatCTRL.js';
-import { auth, isAdmin } from '../Middlewares/Auth.js'
+import { auth } from '../Middlewares/Auth.js'
 const router = express.Router();
 
 router.post('/new/:id', auth, New_Chat);

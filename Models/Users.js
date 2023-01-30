@@ -24,22 +24,29 @@ const usersSchema = new mongoose.Schema(
         lastname: {
             type: String,
         },
-        avatar: {
-            type: Array,
-            default: [],
-            public_id: {
-                type: String,
-                required: [true, 'The Product image is Required'],
-            },
-            url: {
-                type: String,
-                required: [true, 'The Product image is Required'],
-            },
-            active: {
-                type: Boolean,
-                default: true
+        country: {
+            type: String
+        },
+        otp: {
+            type: String,
+        },
+        avatar: [
+            {
+                default: [],
+                public_id: {
+                    type: String,
+                    required: [true, 'The Product image is Required'],
+                },
+                url: {
+                    type: String,
+                    required: [true, 'The Product image is Required'],
+                },
+                active: {
+                    type: Boolean,
+                    default: true
+                }
             }
-        }
+        ]
     },
     { timestamps: true, minimize: false }
 );

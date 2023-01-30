@@ -23,5 +23,5 @@ export const Get_Single_Chat = asyncHandler(async (req, res) => {
 })
 export const Get_Chat_Messages = asyncHandler(async (req, res) => {
     const Chats = await Chat.findOne({ members: { $all: [req.user._id, req.params.id] } });
-    res.json(chat)
+    res.json(Chats)
 })

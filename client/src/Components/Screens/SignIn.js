@@ -1,10 +1,35 @@
 import React from 'react'
 import { BsTelegram } from 'react-icons/bs'
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { useSigninMutation } from '../../Redux/APIs/AuthApi';
+import { useState } from 'react';
+import useTitle from './../../Hooks/useTitle';
+import { ImSpinner7 } from 'react-icons/im'
 const SignIn = () => {
+  useTitle('Login')
+  const navigate = useNavigate();
+  const [inputs, setInputs] = useState({
+    country: '',
+    email: ''
+  });
+  const handleChange = ({ currentTarget: input }) => {
+    setInputs({ ...inputs, [input.name]: input.value });
+  };
+  const [signin, { isLoading}] = useSigninMutation();
+  const HandleSignIn = async (event) => {
+    event.preventDefault();
+    const { email, country } = inputs;
+    const data = { email, country }
+    try {
+      await signin(data).unwrap()
+      setInputs({ email: '', country: '' });
+      navigate(`/confirm?email=${email}&country=${country}&code=`)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
-    <div className='h-screen flex items-center text-center justify-center'>
+    <div className='mt-[7rem] flex text-center justify-center'>
       <div className='container max-w-[28rem]'>
         <div className='text-[9rem] md:text-[12rem] text-indigo-600 flex justify-center py-6'>
           <BsTelegram />
@@ -14,29 +39,33 @@ const SignIn = () => {
           <p className='text-base font-medium py-3 text-gray-500'>Please confirm your country and <br />
             enter your phone number.</p>
         </div>
-        <div className='py-5 pt-3'>
-          <div className='space-y-6'>
-            <div className="relative">
-              <input type="text" className="px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border
-           border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-              <label className="absolute text-md font-semibold text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10
-           origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2
-            peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Country</label>
+        <form onSubmit={HandleSignIn}>
+          <div className='py-5 pt-3'>
+            <div className='space-y-6'>
+              <div className="relative">
+                <input type="text" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border
+                  border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" onChange={handleChange} value={inputs.country} name='country' placeholder=" " />
+                <label className="floating-input">Country</label>
+              </div>
+              <div className="relative">
+                <input type="email" onChange={handleChange} value={inputs.email} name='email' className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border
+                  border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+                <label className="floating-input">Phone Number</label>
+              </div>
             </div>
-            <div className="relative">
-              <input type="text" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border
-           border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-              <label className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10
-           origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2
-            peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Country</label>
+            <div className='flex justify-start px-5 py-5 '>
+              <input type='checkbox' className='duration-500 p-3' />
+              <p className='px-6 text-lg font-medium flex items-center text-gray-500'>Keep me signed in</p>
             </div>
           </div>
-          <div className='flex justify-start px-5 py-5 '>
-            <input type='checkbox' className='duration-500 p-3' />
-            <p className='px-6 text-lg font-medium flex items-center text-gray-500'>Keep me signed in</p>
-          </div>
-        </div>
-        <button className='w-full uppercase text-white bg-indigo-500 font-bold text-xl py-4 rounded-xl hover:bg-indigo-600 focus:bg-indigo-700 duration-700'>Next</button>
+          <button disabled={isLoading} className={`w-full uppercase text-white bg-indigo-500 font-bold text-xl py-4 rounded-xl hover:bg-indigo-600 focus:bg-indigo-700 duration-700 ${isLoading && '!bg-indigo-400'}`}>
+            {isLoading ?
+              <span className='flex justify-between mx-10 items-center'>
+                <p>Next</p>
+                <p className='text-xl font-bold'><ImSpinner7 size={22} /></p>
+              </span> : 'Next'}
+          </button>
+        </form>
         <div className='py-4 hover:bg-gray-100 rounded-xl my-2 duration-700'>
           <Link to='' className='uppercase text-lg text-indigo-600 mt-3 font-semibold'>Log in by qr code</Link>
         </div>

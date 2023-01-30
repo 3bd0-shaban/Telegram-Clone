@@ -1,18 +1,18 @@
 import express from 'express';
-import dotenv from 'dotenv';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
+import config from './config.js';
 import errorMiddleware from './Middlewares/Error.js';
 import UsersRouter from './Routes/UsersRouter.js';
+import AuthRouter from './Routes/AuthRouter.js';
 import GroupRouter from './Routes/GroupRouter.js';
 import MessageRouter from './Routes/MessageRouter.js';
 import ChatRouter from './Routes/ChatRouter.js';
 const app = express();
 const port = process.env.PORT || 5000;
-dotenv.config();
 app.use(
     cors({
         origin: [
@@ -25,9 +25,9 @@ app.use(
 app.use(cookieParser());
 app.use(helmet());
 app.use(morgan('common'));
-// app.use(fileUpload({ useTempFiles: true }));
+mongoose.set('strictQuery',false);
 mongoose
-    .connect(process.env.MONGODB_URI)
+    .connect(process.env.MONGODB_URI,{ useNewUrlParser: true })
     .then(() => {
         app.listen(port, () => {
             console.log(`Successfully started at http://localhost:${port}`);
@@ -54,7 +54,8 @@ process.on("unhandledRejection", (err) => {
         process.exit(1);
     });
 });
-app.use('/api/auth', UsersRouter);
+app.use('/api/user', UsersRouter);
+app.use('/api/auth', AuthRouter);
 app.use('/api/group', GroupRouter);
 app.use('/api/message', MessageRouter);
 app.use('/api/chat', ChatRouter);
