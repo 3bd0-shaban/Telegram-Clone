@@ -8,7 +8,7 @@ const FeaturesSlice = createSlice({
     },
     reducers: {
         setKeyword(state, action) {
-            state.keyword = action.pyload;
+            state.keyword = action.payload;
         },
         ShowDrobdownMore(state) {
             state.DrobdownMore = !state.DrobdownMore;

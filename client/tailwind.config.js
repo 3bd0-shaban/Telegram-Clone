@@ -26,13 +26,13 @@ module.exports = {
       }
     },
     screens: {
-      xs: '370px',
-      sm: '576px',
-      md: '768px',
-      lg: '992px',
-      xl: '1200px',
-      xxl: '1400px',
-      xxxl: '1600px',
+      ss: '360px',
+      sm: '500px',
+      md: '680px',
+      lg: '952px',
+      xl: '1150px',
+      xxl: '1300px',
+      xxxl: '1500px',
     },
   },
   plugins: [

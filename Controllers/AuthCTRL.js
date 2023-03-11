@@ -27,7 +27,8 @@ export const activateEmail = asyncHandler(async (req, res, next) => {
         const user = await Users.findOne({ email })
         // req.app.locals.OTP = null;
         if (!user) {
-            const save = await Users.create(req.body);
+            const username = email.split('@')[0]
+            const save = await new Users({ email, country, otp: req.app.locals.OTP, username }).save()
             const accessToken = createAccessToken({ id: save.id, roles: save.roles });
             const refresh_Token = createRefreshToken({ id: save.id, roles: save.roles });
             res.cookie('Jwt', refresh_Token, {

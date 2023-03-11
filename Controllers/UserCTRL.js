@@ -40,8 +40,8 @@ export const SearchUser = asyncHandler(async (req, res) => {
     res.json(user);
 });
 
-export const Get_UserInfo = asyncHandler(async (req, res) => {
-    const user = await Users.findById(req.params.id);
+export const userByusername = asyncHandler(async (req, res) => {
+    const user = await Users.findOne({ username: req.params.username });
     if (!user) return next(new ErrorHandler("User Not Founded !", 404));
     res.json(user);
 });

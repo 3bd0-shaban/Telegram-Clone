@@ -14,6 +14,7 @@ function App() {
             <Route path='notfound' element={<NotFounded />} />
             <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
               <Route index path='/' element={<Home />} />
+              <Route path=':username/message/:id' element={<Home />} />
               <Route path='/user/:id' element={<Home />} />
 
             </Route>
