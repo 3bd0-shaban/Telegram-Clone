@@ -1,27 +1,46 @@
 import { asyncHandler } from '../Middlewares/asyncHandler.js';
 import Chat from '../Models/Chat.js';
-import Message from '../Models/Message.js';
 import ErrorHandler from '../Utils/ErrorHandler.js';
-export const New_Chat = asyncHandler(async (req, res) => {
+import Message from './../Models/Message.js';
+import Features from './../Utils/Features.js';
+
+export const New_Chat = asyncHandler(async (req, res, next) => {
+    const isAlreadyinChat = await Chat.findOne({
+        $and: [
+            { members: { $elemMatch: { $eq: req.user.id } } },
+            { members: { $elemMatch: { $eq: req.params.id } } },
+        ],
+    }).populate("members")
+    if (isAlreadyinChat) {
+        // const ChatID = isAlreadyinChat.members.find(p => p.id !== req.user.id)
+        return res.json(isAlreadyinChat._id)
+    }
     await new Chat({
         members: [req.user._id, req.params.id]
     }).save()
         .then((chat) => {
-            return res.json(chat);
+            return res.json(chat._id);
         })
         .catch((err) => {
             return next(new ErrorHandler(err.message, 404));
         })
 });
-export const Get_User_Chats = asyncHandler(async (req, res) => {
-    const Chats = await Chat.find({ members: { $in: [req.user._id] } })
-    res.json(Chats)
+export const Get_ALL = asyncHandler(async (req, res, next) => {
+    const resultperpage = 10;
+    const features = new Features(Chat.find(
+        {
+            members: { $in: [req.user.id] },
+            lastMSG: { $ne: null }
+        }), req.query)
+        .Pagination(resultperpage)
+
+    const Chats = await features.query
+        .populate('members', 'username avatar fullname')
+        .sort('-updatedAt')
+    return res.json(Chats)
 });
-export const Get_Single_Chat = asyncHandler(async (req, res) => {
-    const chat = await Chat.findOne({ members: { $in: [req.user._id, req.params.id] } }).populate('members');
-    res.json(chat)
-})
-export const Get_Chat_Messages = asyncHandler(async (req, res) => {
-    const Chats = await Chat.findOne({ members: { $all: [req.user._id, req.params.id] } });
-    res.json(Chats)
-})
+
+export const Get_Single_Chat = asyncHandler(async (req, res, next) => {
+    const SingleChat = await Chat.findById(req.params.id)
+    return res.json(SingleChat)
+});

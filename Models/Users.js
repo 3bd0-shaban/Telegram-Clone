@@ -30,6 +30,10 @@ const usersSchema = new mongoose.Schema(
         otp: {
             type: String,
         },
+        roles:{
+            type:Array,
+            default:['user']
+        },
         avatar: [
             {
                 default: [],

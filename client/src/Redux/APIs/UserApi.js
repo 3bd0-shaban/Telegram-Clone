@@ -1,61 +1,170 @@
 import { apiSlice } from '../ApiSlice';
-export const AuthApi = apiSlice.injectEndpoints({
-    endpoints: builder => ({
-        getUserById: builder.query({
-            query: (id) => ({
-                url: `/api/auth/get/${id}`,
-                credentials: 'include',
+export const UserApi = apiSlice.injectEndpoints({
+    endpoints: (builder) => ({
+        Search: builder.query({
+            query: ({ keyword, pagnum }) => ({
+                url: `/api/user/search?keyword=${keyword}&page=${pagnum}`,
+                method: 'GET',
             }),
-            providesTags: ['Auth'],
+            providesTags: ['User'],
+        }),
+        getUserById: builder.query({
+            query: (username) => ({
+                url: `/api/user/get/${username}`,
+            }),
+            providesTags: ['User', 'UserFollow'],
         }),
         getUser: builder.query({
             query: () => ({
-                url: '/api/auth/info',
+                url: '/api/user/info',
                 method: 'GET',
-                credentials: 'include',
             }),
-            providesTags: ['Auth'],
+            providesTags: ['User', 'Saves', 'UserFollow'],
+        }),
+        Suggestion: builder.query({
+            query: () => ({
+                url: '/api/user/suggestion',
+                method: 'GET',
+            }),
+            providesTags: ['User', 'UserFollow'],
         }),
         getAllUsers: builder.query({
-            query: (pagenum) => ({
-                url: `/api/auth/getall?page=${pagenum}`,
+            query: () => ({
+                url: '/api/user/getall',
                 method: 'GET',
-                credentials: 'include',
             }),
-            providesTags: ['Auth'],
+            providesTags: ['User'],
+        }),
+        FollowersList: builder.query({
+            query: (id) => ({
+                url: `/api/user/fowllowerslist/${id}`,
+                method: 'GET',
+            }),
+            providesTags: ['User'],
+        }),
+        FollowingList: builder.query({
+            query: (id) => ({
+                url: `/api/user/followinglist/${id}`,
+                method: 'GET',
+            }),
+            providesTags: ['User'],
         }),
         DeleteUser: builder.mutation({
             query: (id) => ({
-                url: `/api/auth/get/deleteuser/${id}`,
+                url: `/api/user/get/deleteuser/${id}`,
                 method: 'POST',
-                credentials: 'include',
             }),
-            invalidatesTags: ['Auth'],
+            invalidatesTags: ['User'],
         }),
         updateUserInfo: builder.mutation({
-            query: (data, id) => ({
-                url: `/api/auth/updateuser/${id}`,
-                method: 'POST',
-                credentials: 'include',
+            query: (data) => ({
+                url: '/api/user/updateuser',
+                method: 'PUT',
                 body: data,
             }),
-            invalidatesTags: ['Auth'],
+            invalidatesTags: ['User'],
+        }),
+        UpdateProfilePic: builder.mutation({
+            query: (data) => ({
+                url: '/api/user/updatepic',
+                method: 'PUT',
+                body: data,
+            }),
+            invalidatesTags: ['User'],
         }),
         updateUserRole: builder.mutation({
             query: (id) => ({
-                url: `/api/auth/updateuserrole/${id}`,
+                url: `/api/user/updateuserrole/${id}`,
                 method: 'POST',
-                credentials: 'include',
             }),
-            invalidatesTags: ['Auth'],
+            invalidatesTags: ['User'],
+        }),
+        Block: builder.mutation({
+            query: (id) => ({
+                url: `/api/user/block/${id}`,
+                method: 'PUT',
+            }),
+            invalidatesTags: ['User'],
+        }),
+        UnBlock: builder.mutation({
+            query: (id) => ({
+                url: `/api/user/block/${id}`,
+                method: 'PUT',
+            }),
+            invalidatesTags: ['User'],
+        }),
+        Follow: builder.mutation({
+            query: (id) => ({
+                url: `/api/user/follow/${id}`,
+                method: 'PUT',
+            }),
+            invalidatesTags: ['UserFollow'],
+        }),
+        FollowPrivate: builder.mutation({
+            query: (id) => ({
+                url: `/api/user/followprivate/${id}`,
+                method: 'PUT',
+            }),
+            invalidatesTags: ['UserFollow'],
+        }),
+        UnFollow: builder.mutation({
+            query: (id) => ({
+                url: `/api/user/unfollow/${id}`,
+                method: 'PUT',
+            }),
+            invalidatesTags: ['UserFollow'],
+        }),
+        ConfirmFollowing: builder.mutation({
+            query: (id) => ({
+                url: `/api/user/confirm/${id}`,
+                method: 'PUT',
+            }),
+            invalidatesTags: ['User'],
+        }),
+        CancelFollowRequest: builder.mutation({
+            query: (id) => ({
+                url: `/api/user/cancelrequest/${id}`,
+                method: 'PUT',
+            }),
+            invalidatesTags: ['User'],
+        }),
+        RefuseFollowRequest: builder.mutation({
+            query: (id) => ({
+                url: `/api/user/refuse/${id}`,
+                method: 'PUT',
+            }),
+            invalidatesTags: ['User'],
+        }),
+        ChangePrivacy: builder.mutation({
+            query: () => ({
+                url: '/api/user/privacy',
+                method: 'PUT',
+            }),
+            invalidatesTags: ['User'],
         }),
     }),
+
 });
+
 export const {
-    useGetUserByIdQuery,
-    useGetAllUsersQuery,
-    useGetUserQuery,
+    useSearchQuery,
     useDeleteUserMutation,
     useUpdateUserInfoMutation,
     useUpdateUserRoleMutation,
-} = AuthApi;
+    useUpdateProfilePicMutation,
+    useFollowersListQuery,
+    useFollowingListQuery,
+    useFollowMutation,
+    useUnFollowMutation,
+    useSuggestionQuery,
+    useGetUserByIdQuery,
+    useGetAllUsersQuery,
+    useGetUserQuery,
+    useBlockMutation,
+    useUnBlockMutation,
+    useFollowPrivateMutation,
+    useChangePrivacyMutation,
+    useCancelFollowRequestMutation,
+    useConfirmFollowingMutation,
+    useRefuseFollowRequestMutation,
+} = UserApi;

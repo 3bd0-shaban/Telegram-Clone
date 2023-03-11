@@ -1,11 +1,17 @@
 import ErrorHandler from '../Utils/ErrorHandler.js'
 const errorMiddleware = (err, req, res, next) => {
-  // res.setHeader('Content-Type', 'application/json');
-  console.log("Middleware Error Hadnling")
+
   let customError = {
     statusCode: err.statusCode || 500,
     message: err.message || "Internal Server Error",
   }
+
+  if (err.name === "TypeError") {
+    const message = `Resource not found. Invalid: you may forget to specify await`;
+    err = new ErrorHandler(message, 400);
+    console.log(err)
+  }
+
   // Wrong Mongodb Id error
   if (err.name === "CastError") {
     const message = `Resource not found. Invalid: ${err.path}`;
@@ -29,7 +35,6 @@ const errorMiddleware = (err, req, res, next) => {
     const message = `Json Web Token is Expired, Try again `;
     err = new ErrorHandler(message, 400);
   }
-
   res.status(customError.statusCode).json({
     success: false,
     msg: customError.message,

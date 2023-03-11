@@ -1,20 +1,23 @@
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { Provider } from 'react-redux';
 import { Store } from './Redux/Store';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import React from 'react';
+import { SocketProvider } from './Utils/SocketContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={Store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/*" element={<App />} />
-        </Routes>
-      </BrowserRouter>
+      <SocketProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/*" element={<App />} />
+          </Routes>
+        </BrowserRouter>
+      </SocketProvider>
     </Provider>
   </React.StrictMode>
 );

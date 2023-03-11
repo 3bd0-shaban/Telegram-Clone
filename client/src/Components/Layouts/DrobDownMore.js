@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { BsBookmarkCheck, BsBookmarks, BsGear, BsJournals, BsMoon, BsPeople, BsQuestionCircle, BsToggleOff } from 'react-icons/bs'
-import { ShowDrobdownMore } from '../../Redux/Slices/FeaturesSlice';
+import { FeaturesAction } from './../../Redux/Slices/FeaturesSlice';
 const DrobDownMore = () => {
     const DropItem = (props) => {
         return (
@@ -21,7 +21,7 @@ const DrobDownMore = () => {
     return (
         DrobdownMore &&
         <>
-            <div onClick={() => dispatch(ShowDrobdownMore(false))} className="fixed inset-0 z-20"></div>
+            <div onClick={() => dispatch(FeaturesAction.ShowDrobdownMore(false))} className="fixed inset-0 z-20"></div>
             <div className='absolute z-30 top-[4rem] left-5 shadow-gray-200 drop-shadow-lg rounded-lg bg-[rgb(255,255,255,.9)] backdrop-blur-xl text-md font-semibold py-3 px-2 w-[19rem]'>
                 <DropItem Icon={<BsBookmarks />} Title={'Saved Messages'} />
                 <DropItem Icon={<BsJournals />} Title={'Archeved Chats'} />

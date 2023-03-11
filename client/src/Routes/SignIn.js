@@ -1,9 +1,9 @@
 import React from 'react'
 import { BsTelegram } from 'react-icons/bs'
 import { Link, useNavigate } from 'react-router-dom';
-import { useSigninMutation } from '../../Redux/APIs/AuthApi';
+import { useSigninMutation } from '../Redux/APIs/AuthApi';
 import { useState } from 'react';
-import useTitle from './../../Hooks/useTitle';
+import { useTitle, usePersist } from '../Components/Exports';
 import { ImSpinner7 } from 'react-icons/im'
 const SignIn = () => {
   useTitle('Login')
@@ -12,21 +12,25 @@ const SignIn = () => {
     country: '',
     email: ''
   });
+  const [persist, setPersist] = usePersist();
+  const HandleToggle = () => {
+    setPersist(prev => !prev)
+  }
   const handleChange = ({ currentTarget: input }) => {
     setInputs({ ...inputs, [input.name]: input.value });
   };
-  const [signin, { isLoading}] = useSigninMutation();
+  const [signin, { isLoading, isError, error }] = useSigninMutation();
   const HandleSignIn = async (event) => {
     event.preventDefault();
     const { email, country } = inputs;
     const data = { email, country }
-    try {
-      await signin(data).unwrap()
-      setInputs({ email: '', country: '' });
-      navigate(`/confirm?email=${email}&country=${country}&code=`)
-    } catch (error) {
-      console.log(error)
-    }
+    await signin(data).unwrap()
+      .then(() => {
+        navigate(`/confirm?email=${email}&country=${country}&code=`)
+        setInputs({ email: '', country: '' });
+      }).catch(() => {
+
+      })
   }
   return (
     <div className='mt-[7rem] flex text-center justify-center'>
@@ -54,7 +58,7 @@ const SignIn = () => {
               </div>
             </div>
             <div className='flex justify-start px-5 py-5 '>
-              <input type='checkbox' className='duration-500 p-3' />
+              <input type='checkbox' onChange={HandleToggle} value={persist} className='duration-500 p-3' />
               <p className='px-6 text-lg font-medium flex items-center text-gray-500'>Keep me signed in</p>
             </div>
           </div>
@@ -69,6 +73,7 @@ const SignIn = () => {
         <div className='py-4 hover:bg-gray-100 rounded-xl my-2 duration-700'>
           <Link to='' className='uppercase text-lg text-indigo-600 mt-3 font-semibold'>Log in by qr code</Link>
         </div>
+        {isError && <p className='text-lg font-semibold text-red-600'>{error?.data?.msg}</p>}
       </div>
     </div>
   )

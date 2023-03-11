@@ -1,7 +1,6 @@
 import React from 'react'
 import { BsEmojiSmile, BsMicFill } from 'react-icons/bs'
 import { RiAttachment2 } from 'react-icons/ri'
-
 const Conversation = () => {
     return (
         <div className='fixed bottom-0 left-[45%] flex gap-6 mb-8'>

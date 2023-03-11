@@ -1,5 +1,5 @@
 import React from 'react'
-import { Sidebar, Header, Conversation } from '../Exports'
+import { Sidebar, Header, Conversation } from '../Components/Exports'
 
 const Home = () => {
   return (

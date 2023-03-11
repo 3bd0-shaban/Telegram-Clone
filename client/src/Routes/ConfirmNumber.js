@@ -1,10 +1,10 @@
 import { BsPen, BsTelegram } from 'react-icons/bs';
-import { useVerifyEmailMutation } from '../../Redux/APIs/AuthApi'
-import useTitle from './../../Hooks/useTitle';
+import { useVerifyEmailMutation } from '../Redux/APIs/AuthApi'
+import useTitle from '../Hooks/useTitle';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
-import { setCredentials } from '../../Redux/Slices/UserSlice';
+import { setCredentials } from '../Redux/Slices/UserSlice';
 import { ImSpinner7 } from 'react-icons/im';
 const ConfirmNumber = () => {
     useTitle('Login')
@@ -24,8 +24,9 @@ const ConfirmNumber = () => {
     const HandleVerify = async (event) => {
         event.preventDefault();
         const { code } = inputs;
+        const data = { email, country, code }
         try {
-            const { accessToken } = await VerifyEmail({ email, country, code }).unwrap()
+            const { accessToken } = await VerifyEmail(data).unwrap()
             dispatch(setCredentials({ accessToken }));
             setInputs({ code: '' });
             navigate('/')

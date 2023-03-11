@@ -1,11 +1,9 @@
 import Users from '../Models/Users.js';
 import ErrorHandler from '../Utils/ErrorHandler.js';
-import bcrypt from 'bcrypt';
 import Jwt from 'jsonwebtoken';
 import { asyncHandler } from '../Middlewares/asyncHandler.js'
 import sendEmail from './../Utils/sendEmail.js';
-const { Client_URL } = process.env;
-
+import Features from '../Utils/Features.js'
 export const SignUp = asyncHandler(async (req, res, next) => {
     const { email } = req.body;
     if (!email) return next(new ErrorHandler("Email Requried ! !", 404));
@@ -33,6 +31,15 @@ export const UserInfo = asyncHandler(async (req, res) => {
     if (!user) return next(new ErrorHandler("User Not Founded !", 404));
     res.json(user);
 });
+
+export const SearchUser = asyncHandler(async (req, res) => {
+    const { email } = req.query
+    const features = new Features(Users.find({ email }).limit(5), req.query).search()
+    const user = await features.query
+    if (!user) return next(new ErrorHandler("User Not Founded !", 404));
+    res.json(user);
+});
+
 export const Get_UserInfo = asyncHandler(async (req, res) => {
     const user = await Users.findById(req.params.id);
     if (!user) return next(new ErrorHandler("User Not Founded !", 404));

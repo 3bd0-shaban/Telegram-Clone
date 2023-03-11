@@ -1,27 +1,28 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useRefreshMutation } from "../Redux/APIs/AuthApi";
-import { useSelector } from "react-redux";
-import { selectCurrentToken } from "../Redux/Slices/UserSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentToken, setCredentials } from "../Redux/Slices/UserSlice";
 import usePersist from "../Hooks/usePersist";
-// import Logo from './Home/Layouts/Logo';
-import { ImSpinner7 } from 'react-icons/im';
+import { LoadingScreen } from "../Components/Exports";
 const PersistLogin = () => {
     const [persist] = usePersist();
     const token = useSelector(selectCurrentToken);
+
     const effectRan = useRef(false);
     const [trueSuccess, setTrueSuccess] = useState(false)
-
-    const [refresh, { isUninitialized, isLoading, isSuccess, isError, error }] = useRefreshMutation();
+    const dispatch = useDispatch();
+    const [refresh, { isUninitialized, isLoading, isSuccess, isError }] = useRefreshMutation();
 
     useEffect(() => {
 
-        if (effectRan.current === true || process.env.NODE_ENV !== 'development') { // React 18 Strict Mode
+        if (effectRan.current === true || process.env.NODE_ENVREACT_APP_NODE_ENV !== 'development') { // React 18 Strict Mode
 
             const verifyRefreshToken = async () => {
                 console.log('verifying refresh token')
                 try {
-                    await refresh()
+                    const { accessToken, user } = await refresh().unwrap()
+                    dispatch(setCredentials({ accessToken, user }))
                     setTrueSuccess(true)
                 }
                 catch (err) {
@@ -48,19 +49,14 @@ const PersistLogin = () => {
 
         content =
             <>
-                <div className="h-screen flex justify-center items-center text-7xl">
-                    <div className="">
-                        {/* <Logo /> */}
-                        <div className="text-blue-600 text-5xl py-8 animate-spin flex items-center justify-center"><ImSpinner7/></div>
-                    </div>
-                </div>
+                <LoadingScreen />
             </>
     } else if (isError) { //persist: yes, token: no
-        console.log('error')
-        console.log(error)
+        // console.log('error')
+        // console.log(error)
         content = <Outlet />
     } else if (isSuccess && trueSuccess) { //persist: yes, token: yes
-        console.log('success')
+        // console.log('success')
         content = <Outlet />
     } else if (token && isUninitialized) { //persist: yes, token: yes
         // console.log('token and uninit')

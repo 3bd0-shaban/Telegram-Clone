@@ -4,22 +4,17 @@ const UserSlice = createSlice({
     initialState: {
         user: {},
         token: null,
-        // isLogged: localStorage.getItem('Logged?') ? true : false,
-        // isAdmin: localStorage.getItem('admin?') ? true : false
     },
     reducers: {
         setCredentials(state, action) {
-            const { auth, accessToken } = action.payload;
-            state.user = auth;
+            const { user, accessToken } = action.payload;
+            state.user = user;
             state.token = accessToken;
-            // state.isLogged = localStorage.getItem('Logged?') ? true : false;
-            // state.isAdmin = localStorage.getItem('Admin?') ? true : false;
+
         },
         LogOut(state) {
             state.user = {};
             state.token = null;
-            // state.isLogged = false;
-            // state.isAdmin = false;
         },
     }
 })

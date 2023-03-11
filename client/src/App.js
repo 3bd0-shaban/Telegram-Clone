@@ -7,18 +7,15 @@ function App() {
   return (
     <AnimatePresence>
       <Routes location={location} key={location.pathname}>
-        <Route element={<PersistLogin />}>
-          <Route path='/' element={<Layout />}>
-            <Route index path='/' element={<Home />} />
-            <Route path='signin' element={<SignIn />} />
-            <Route path='confirm' element={<ConfirmNumber />} />
+        <Route path='/' element={<Layout />}>
+          <Route path='signin' element={<SignIn />} />
+          <Route path='confirm' element={<ConfirmNumber />} />
+          <Route element={<PersistLogin />}>
             <Route path='notfound' element={<NotFounded />} />
             <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
-              <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Customer]} />}>
-              </Route>
-              <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+              <Route index path='/' element={<Home />} />
+              <Route path='/user/:id' element={<Home />} />
 
-              </Route>
             </Route>
           </Route>
         </Route>
