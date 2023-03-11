@@ -20,7 +20,7 @@ const ConfirmNumber = () => {
     const handleChange = ({ currentTarget: input }) => {
         setInputs({ ...inputs, [input.name]: input.value });
     };
-    const [VerifyEmail, { isLoading }] = useVerifyEmailMutation();
+    const [VerifyEmail, { isLoading, isError, error }] = useVerifyEmailMutation();
     const HandleVerify = async (event) => {
         event.preventDefault();
         const { code } = inputs;
@@ -29,7 +29,7 @@ const ConfirmNumber = () => {
             const { accessToken } = await VerifyEmail(data).unwrap()
             dispatch(setCredentials({ accessToken }));
             setInputs({ code: '' });
-            navigate('/')
+            navigate('/full-name')
         } catch (error) {
             console.log(error)
         }
@@ -76,7 +76,10 @@ const ConfirmNumber = () => {
                             <p>Next</p>
                             <p className='text-xl font-bold'><ImSpinner7 size={22} /></p>
                         </span> : 'Next'}
-                </button>            </form>
+                </button>
+                {isError && <p className='text-lg font-semibold my-3 text-red-600'>{error?.data?.msg}</p>}
+
+            </form>
         </div>
     )
 }

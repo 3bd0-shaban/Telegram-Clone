@@ -1,5 +1,6 @@
 export { default as SignIn } from '../Routes/SignIn';
 export { default as ConfirmNumber } from '../Routes/ConfirmNumber';
+export { default as SetName } from '../Routes/SetName';
 export { default as Home } from '../Routes/Home';
 export { default as Sidebar } from './Layouts/Sidebar';
 export { default as RippleBtn } from './Layouts/RippleBtn';
@@ -18,7 +19,6 @@ export { default as NotFounded } from '../Utils/NotFounded';
 
 //////////////////////Utils////////////////////////////////
 export { default as ChatBox } from './Home/ChatBox';
-export { default as Conversation } from './Home/Conversation';
 export { default as CoversationCTRL } from './Home/CoversationCTRL';
 export { default as InfinteScrollableChat } from './Home/InfinteScrollableChat';
 export { default as Message } from './Home/Message';

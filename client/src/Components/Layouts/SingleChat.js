@@ -23,7 +23,7 @@ const SingleChat = ({ chat, username, SendPost }) => {
                     <span className='w-16 h-16 bg-red-800 rounded-full flex items-center justify-center text-white font-bold'>BG</span>
                 </div>
                 <div className='w-full px-3'>
-                    <p className='font-[500] text-sm'>{friendChat?.username}</p>
+                    <p className='font-[500] text-sm'>{`${friendChat?.firstname} ${friendChat?.lastname}`}</p>
                     <p className='text-xs text-gray-400 ellipse-2'>{chat?.lastMSG}</p>
                 </div>
             </div>

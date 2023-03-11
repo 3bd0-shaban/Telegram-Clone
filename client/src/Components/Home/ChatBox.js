@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useGetUserByIdQuery } from '../../Redux/APIs/UserApi'
 import { CoversationCTRL, useSocket, Emoji, InfinteScrollableChat } from '../Exports'
 import { useNewMessageMutation } from '../../Redux/APIs/MessageApi'
@@ -13,6 +13,7 @@ import { IoMdPaperPlane } from 'react-icons/io'
 import { RiAttachment2 } from 'react-icons/ri'
 import { FiSearch } from 'react-icons/fi'
 import { RxDotsVertical } from 'react-icons/rx';
+import { BiChevronLeft } from 'react-icons/bi'
 const ChatBox = ({ setSelected }) => {
     Scrolldown();
     const { username, id } = useParams();
@@ -21,6 +22,7 @@ const ChatBox = ({ setSelected }) => {
     const [msg, setMSG] = useState('');
     const [image, setImage] = useState();
     const [details, setDetails] = useState(false);
+    // eslint-disable-next-line
     const [isOnline, setIsOnline] = useState(false);
     const { socket } = useSocket();
     const userInfo = useSelector(selectCurrentUser);
@@ -34,23 +36,6 @@ const ChatBox = ({ setSelected }) => {
         });
     }, [socket, userById, id])
 
-    // useEffect(() => {
-    //     socket?.on('MessagetoClient', ({ image, sender, receiver, createdAt, msg }) => {
-    //         dispatch(setSingleMSG({ image, sender, receiver, createdAt, msg }))
-    //         // console.log(msg)
-    //     })
-    //     // eslint-disable-next-line 
-    // }, []);
-
-    // const loadFile = (e) => {
-    //     for (const file of e.target.files) {
-    //         const reader = new FileReader();
-    //         reader.readAsDataURL(file);
-    //         reader.onload = () => {
-    //             setImage(reader.result);
-    //         };
-    //     }
-    // };
     const NewMSG = (e) => {
         if (!image) {
             e.preventDefault();
@@ -85,11 +70,14 @@ const ChatBox = ({ setSelected }) => {
         details ? <CoversationCTRL userById={userById} setDetails={setDetails} details={details} id={id} setSelected={setSelected} /> :
             <div className='h-full'>
                 <div className='fixed md:static top-0 insetx-0 bg-white w-full flex border-b justify-between'>
-                    <div className='col-span-3 w-full flex py-1 justify-between items-center px-5'>
+                    <div className='col-span-3 w-full flex py-1 justify-between items-center px-2 lg:px-5'>
                         <div className='flex gap-3 items-center'>
-                            <div className='w-12 h-12 bg-red-800 rounded-full flex items-center justify-center text-white font-bold'>V L</div>
+                            <div className='flex gap-2 items-center'>
+                                <Link to='/' onClick={() => setSelected(false)} className='block lg:hidden'><BiChevronLeft size={30} /></Link>
+                                <div className='w-12 h-12 bg-red-800 rounded-full flex items-center justify-center text-white font-bold'>V L</div>
+                            </div>
                             <div>
-                                <p className='text-xl font-semibold'>{userById?.username}</p>
+                                <p className='lg:text-lg text-gray-600 font-semibold'>{`${userById?.firstname} ${userById?.lastname}`}</p>
                                 <p className='font-light text-lg'>125 Subscriber</p>
                             </div>
                         </div>

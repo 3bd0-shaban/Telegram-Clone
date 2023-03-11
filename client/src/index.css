@@ -51,3 +51,21 @@ html {
            origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2
             peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1
 }
+.ripple {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    animation: ripple 0.4s linear;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.75;
+    pointer-events: none;
+  }
+  
+  @keyframes ripple {
+    to {
+      transform: translate(-50%, -50%) scale(4);
+      opacity: 0;
+    }
+  }
+
+  

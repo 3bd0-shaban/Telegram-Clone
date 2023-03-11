@@ -2,19 +2,15 @@ import { createSlice } from "@reduxjs/toolkit"
 const FeaturesSlice = createSlice({
     name: "Features",
     initialState: {
-        keyword: '',
         DrobdownMore: false,
-        SeachPanel: false,
+        isSearchPanel: false,
     },
     reducers: {
-        setKeyword(state, action) {
-            state.keyword = action.payload;
-        },
         ShowDrobdownMore(state) {
             state.DrobdownMore = !state.DrobdownMore;
         },
         setSearchPanel(state) {
-            state.SeachPanel = !state.SeachPanel
+            state.isSearchPanel = !state.isSearchPanel
         }
     },
 

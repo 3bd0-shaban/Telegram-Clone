@@ -30,13 +30,12 @@ const usersSchema = new mongoose.Schema(
         otp: {
             type: String,
         },
-        roles:{
-            type:Array,
-            default:['user']
+        roles: {
+            type: Array,
+            default: ['user']
         },
         avatar: [
             {
-                default: [],
                 public_id: {
                     type: String,
                     required: [true, 'The Product image is Required'],

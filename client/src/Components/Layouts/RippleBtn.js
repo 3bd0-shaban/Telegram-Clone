@@ -1,42 +1,36 @@
-import { useState } from "react";
-
-const RippleBtn = () => {
-    const [spanStyle, setSpanStyle] = useState({});
+import React, { useState } from "react";
+function Button({ className }) {
+    const [ripple, setRipple] = useState(false);
+    const [coords, setCoords] = useState({ x: 0, y: 0 });
 
     const handleClick = (e) => {
-        const btn = e.target;
-        const offset = btn.getBoundingClientRect();
-        const x = e.clientX - offset.left;
-        const y = e.clientY - offset.top;
-        const span = document.createElement("span");
-
-        setSpanStyle({
-            top: y + "px",
-            left: x + "px",
+        setRipple(true);
+        setCoords({
+            x: e.clientX - e.target.offsetLeft,
+            y: e.clientY - e.target.offsetTop,
         });
-
-        btn.appendChild(span);
-
         setTimeout(() => {
-            btn.removeChild(span);
-        }, 700);
+            setRipple(false);
+        }, 600);
     };
 
     return (
-        <div className="max-w-screen-sm mx-auto mt-5 text-center">
-            <button
-                className="bg-blue-500 text-white rounded-lg px-4 py-3 text-sm font-medium 
-                   min-w-[200px] cursor-pointer relative overflow-hidden focus:outline-none 
-                   active:outline-none"
-                onClick={handleClick}
-            >
-                Click Me
+        <button
+            className={`relative rounded overflow-hidden shadow ${className}`}
+            onClick={handleClick}
+        >
+            Button text
+            {ripple && (
                 <span
-                    className="ripple-span absolute rounded-full bg-white opacity-70 transform -translate-x-1/2 -translate-y-1/2"
-                    style={spanStyle}
-                ></span>
-            </button>
-        </div>
+                    className="ripple absolute bg-white rounded-full"
+                    style={{
+                        left: `${coords.x}px`,
+                        top: `${coords.y}px`,
+                    }}
+                />
+            )}
+        </button>
     );
 }
-export default RippleBtn
+
+export default Button;
