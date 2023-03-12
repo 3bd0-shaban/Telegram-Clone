@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useGetUserByIdQuery } from '../../Redux/APIs/UserApi'
-import { CoversationCTRL, useSocket, Emoji, InfinteScrollableChat } from '../Exports'
+import { CoversationCTRL, Emoji, InfinteScrollableChat } from '../Exports'
 import { useNewMessageMutation } from '../../Redux/APIs/MessageApi'
 import { motion } from 'framer-motion';
 import AnimDropdown from '../../Animation/AnimDropdown'
@@ -14,6 +14,7 @@ import { RiAttachment2 } from 'react-icons/ri'
 import { FiSearch } from 'react-icons/fi'
 import { RxDotsVertical } from 'react-icons/rx';
 import { BiChevronLeft } from 'react-icons/bi'
+import getSocket from '../../Utils/SocketConnect'
 const ChatBox = ({ setSelected }) => {
     Scrolldown();
     const { username, id } = useParams();
@@ -22,15 +23,12 @@ const ChatBox = ({ setSelected }) => {
     const [msg, setMSG] = useState('');
     const [image, setImage] = useState();
     const [details, setDetails] = useState(false);
-    // eslint-disable-next-line
     const [isOnline, setIsOnline] = useState(false);
-    const { socket } = useSocket();
     const userInfo = useSelector(selectCurrentUser);
     const [isPikerVisiable, setIsPikerVisable] = useState(false);
-    // const dispatch = useDispatch();
+    const socket = getSocket()
     useEffect(() => {
         socket?.on("getusers", (data) => {
-            console.log(data)
             const online = data?.some(user => user.userId === userById?._id)
             online && setIsOnline(true)
         });
@@ -78,7 +76,10 @@ const ChatBox = ({ setSelected }) => {
                             </div>
                             <div>
                                 <p className='lg:text-lg text-gray-600 font-semibold'>{`${userById?.firstname} ${userById?.lastname}`}</p>
-                                <p className='font-light text-lg'>125 Subscriber</p>
+                                {isOnline && <div className='font-light text-sm text-gray-400 flex items-end gap-1'>
+                                    <p>Active Now</p>
+                                    <span className='w-2 h-2 mb-0.5 bg-green-500 rounded-full'></span>
+                                </div>}
                             </div>
                         </div>
                         <div className='flex gap-5 text-2xl'>

@@ -20,7 +20,6 @@ const SocketServer = (socket) => {
 
     });
 
-
     const handler = (sender, receiver, { type, reactionType, post }) => {
         const receiverSocket = findConnectedUser(receiver.username);
         if (receiverSocket && sender.id != receiver.id) {

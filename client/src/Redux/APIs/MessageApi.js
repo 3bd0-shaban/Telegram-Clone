@@ -1,7 +1,6 @@
 import { apiSlice } from '../ApiSlice';
 import { setSingleMSGNotify } from '../Slices/MessageSlice';
-import getSocket from '../SocketRTK';
-// const userId = localStorage.getItem('id')
+import getSocket from '../../Utils/SocketConnect';
 
 export const MessageApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -82,15 +81,12 @@ export const MessageApi = apiSlice.injectEndpoints({
                 { updateCachedData, cacheDataLoaded, updateQueryData, cacheEntryRemoved, dispatch, getState }
             ) {
 
-                let userId = getState().auth?.user?._id;
                 // await cacheDataLoaded;
                 const socket = getSocket()
-                socket.on("connect", () => {
-                    socket.emit("join", userId);
-
-                });
+               
                 // socket.on("getusers", (data) => {
-                //     console.log(`goined ${data.length}`)
+                //     console.log(data)
+                //     // console.log(`goined ${data.length}`)
                 // });
                 try {
                     socket.on("MessagetoClient", ({ image, sender, receiver, createdAt, chatId, msg }) => {

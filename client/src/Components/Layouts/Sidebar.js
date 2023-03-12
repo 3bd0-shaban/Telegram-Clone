@@ -20,7 +20,6 @@ const Sidebar = () => {
     // refetchOnMountOrArgChange: true
   });
   const [keyword, setKeyword] = useState('')
-  console.log(keyword)
   const { DrobdownMore, isSearchPanel } = useSelector(state => state.Features);
   const { Chats, totalCount } = data || {};
   const { username } = useParams()

@@ -1,5 +1,5 @@
 import { apiSlice } from '../ApiSlice';
-import getSocket from '../SocketRTK';
+import getSocket from '../../Utils/SocketConnect';
 export const ChatApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         NewChat: builder.mutation({
