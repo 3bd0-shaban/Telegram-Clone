@@ -1,6 +1,6 @@
-const AnimSlide = {
+const AnimSlideLeft = {
     initial: {
-        x: "-100vw",
+        x: "100vw",
         opacity: 0,
     },
     animate: {
@@ -14,4 +14,4 @@ const AnimSlide = {
         transition: { ease: 'easeInOut' }
     }
 };
-export default AnimSlide
+export default AnimSlideLeft

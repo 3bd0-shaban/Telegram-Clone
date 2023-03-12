@@ -1,15 +1,16 @@
 import React from 'react'
-import { Sidebar, ChatBox, useBreakpoint } from '../Components/Exports'
+import { Sidebar, ChatBox, useBreakpoint, WindowSettings } from '../Components/Exports'
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from './../Redux/Slices/UserSlice';
+import { AnimatePresence } from 'framer-motion';
 const Home = () => {
   const userInfo = useSelector(selectCurrentUser)
   const [selected, setSelected] = useState(false);
   const { username, id } = useParams();
   const { MobileView } = useBreakpoint();
-
+  const { isSettingsWin } = useSelector(state => state.Features)
   useEffect(() => {
     if (id && username) {
       return setSelected(true)
@@ -22,7 +23,13 @@ const Home = () => {
         <div className='grid grid-cols-4 h-full'>
           {(!MobileView || (!id)) &&
             <div className='col-span-4 lg:col-span-1 h-full'>
-              <Sidebar userInfo={userInfo} />
+              <AnimatePresence>
+                {isSettingsWin ? <WindowSettings /> :
+
+                  <Sidebar userInfo={userInfo} />
+
+                }
+              </AnimatePresence>
             </div>
           }
           <div className={`col-span-3 h-full relative ${MobileView && '!col-span-4'}`}>

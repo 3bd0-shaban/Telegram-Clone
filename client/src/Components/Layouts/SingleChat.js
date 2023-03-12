@@ -16,6 +16,12 @@ const SingleChat = ({ chat, username, SendPost }) => {
     return (
 
         <Link to={`/${friendChat?.username}/message/${chat?._id}`}
+            // drag='x'
+            // dragDirectionLock
+            // dragConstraints={{ right: 0, left: 0 }}
+            // dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
+            // whileTap={() => navigate(`/${friendChat?.username}/message/${chat?._id}`)}
+            // dragElastic={0.5}
             className={`py-3 mx-2 flex justify-between px-3 rounded-xl hover:text-blue-500 hover:bg-blue-100
               ${(username === friendChat?.username) && '!bg-blue-100 !text-blue-500'}`}>
             <div className='flex'>

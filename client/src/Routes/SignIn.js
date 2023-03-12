@@ -47,13 +47,24 @@ const SignIn = () => {
           <div className='py-5 pt-3'>
             <div className='space-y-6'>
               <div className="relative">
-                <input type="text" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border
-                  border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" onChange={handleChange} value={inputs.country} name='country' placeholder=" " />
+                <input type="text"
+                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border
+                  border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  onChange={handleChange}
+                  value={inputs.country}
+                  name='country'
+                  placeholder=" " />
                 <label className="floating-label">Country</label>
               </div>
               <div className="relative">
-                <input type="email" onChange={handleChange} value={inputs.email} name='email' className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border
-                  border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+                <input
+                  type="email"
+                  onChange={handleChange}
+                  value={inputs.email}
+                  name='email'
+                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border
+                  border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" " />
                 <label className="floating-label">Phone Number</label>
               </div>
             </div>
@@ -62,11 +73,14 @@ const SignIn = () => {
               <p className='px-6 text-lg font-medium flex items-center text-gray-500'>Keep me signed in</p>
             </div>
           </div>
-          <button disabled={isLoading} className={`w-full uppercase text-white bg-indigo-500 font-bold text-xl py-4 rounded-xl hover:bg-indigo-600 focus:bg-indigo-700 duration-700 ${isLoading && '!bg-indigo-400'}`}>
+          <button
+            disabled={isLoading}
+            className={`w-full uppercase text-white bg-indigo-500 font-bold text-xl py-4 rounded-xl hover:bg-indigo-600 focus:bg-indigo-700 duration-700 
+           ${isLoading && '!bg-indigo-400'}`}>
             {isLoading ?
               <span className='flex justify-between mx-10 items-center'>
                 <p>Next</p>
-                <p className='text-xl font-bold'><ImSpinner7 size={22} /></p>
+                <p className='text-xl font-bold animate-spin'><ImSpinner7 size={22} /></p>
               </span> : 'Next'}
           </button>
         </form>

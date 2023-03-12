@@ -29,6 +29,17 @@ export { default as SingleChat } from './Layouts/SingleChat';
 export { default as SkilMSGs } from '../Skilitons/SkilMSGs'
 
 
+export { default as ChatFolders } from './Settings/ChatFolders'
+export { default as LogOut } from './Settings/LogOut'
+export { default as DataAndStorage } from './Settings/DataAndStorage'
+export { default as Devices } from './Settings/Devices'
+export { default as GeneralSettings } from './Settings/GeneralSettings'
+export { default as Language } from './Settings/Language'
+export { default as Notifications } from './Settings/Notifications'
+export { default as StikersAndEmojis } from './Settings/StikersAndEmojis'
+export { default as WindowSettings } from './Settings/WindowSettings'
+
+
 
 export { default as useTitle } from '../Hooks/useTitle'
 export { default as useSocket } from '../Hooks/useSocket'

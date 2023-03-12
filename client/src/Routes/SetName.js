@@ -140,7 +140,7 @@ const SetName = () => {
                     {isLoading ?
                         <span className='flex justify-between mx-10 items-center'>
                             <p>Next</p>
-                            <p className='text-xl font-bold'><ImSpinner7 size={22} /></p>
+                            <p className='text-xl font-bold animate-spin'><ImSpinner7 size={22} /></p>
                         </span> : 'Next'}
                 </button>
                 {(isError || iserrorupload) && <p className='text-lg font-semibold my-3 text-red-600'>{error?.data?.msg || errorupload?.data?.msg}</p>}

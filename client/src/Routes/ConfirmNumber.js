@@ -51,8 +51,14 @@ const ConfirmNumber = () => {
                 <div className='py-5 pt-3'>
                     <div className='space-y-6'>
                         <div className="relative">
-                            <input type="text" onChange={handleChange} value={inputs.code} name='code' className="px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                            <label className="absolute text-md font-semibold text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Code</label>
+                            <input type="text"
+                                onChange={handleChange}
+                                value={inputs.code}
+                                name='code'
+                                className="px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border 
+                                border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label className="floating-label">Code</label>
                         </div>
                         {/* <div className="flex gap-3 w-full mb-5">
                                 {[1, 2, 3, 4, 5, 6].map((digit, idx) => (
@@ -70,11 +76,14 @@ const ConfirmNumber = () => {
                             </div> */}
                     </div>
                 </div>
-                <button disabled={isLoading} className={`w-full uppercase text-white bg-indigo-500 font-bold text-xl py-4 rounded-xl hover:bg-indigo-600 focus:bg-indigo-700 duration-700 ${isLoading && '!bg-indigo-400'}`}>
+                <button
+                    disabled={isLoading}
+                    className={`w-full uppercase text-white bg-indigo-500 font-bold text-xl py-4 rounded-xl hover:bg-indigo-600 focus:bg-indigo-700 duration-700 
+                ${isLoading && '!bg-indigo-400'}`}>
                     {isLoading ?
                         <span className='flex justify-between mx-10 items-center'>
                             <p>Next</p>
-                            <p className='text-xl font-bold'><ImSpinner7 size={22} /></p>
+                            <p className='text-xl font-bold animate-spin'><ImSpinner7 size={22} /></p>
                         </span> : 'Next'}
                 </button>
                 {isError && <p className='text-lg font-semibold my-3 text-red-600'>{error?.data?.msg}</p>}

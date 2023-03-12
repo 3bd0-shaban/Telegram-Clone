@@ -9,6 +9,8 @@ import { AiOutlineMenu } from 'react-icons/ai';
 import DrobDownMore from './DrobDownMore';
 import SearchPanel from './SearchPanel';
 import { BiChevronLeft } from 'react-icons/bi';
+import { motion } from 'framer-motion';
+import AnimSlideRight from '../../Animation/AnimSlideRight';
 const Sidebar = () => {
   const [page, setPage] = useState(1);
   // eslint-disable-next-line 
@@ -43,8 +45,13 @@ const Sidebar = () => {
   }, [page, dispatch]);
 
   return (
-    <>
+    <motion.div
+      variants={AnimSlideRight}
+      initial='initial'
+      animate='animate'
+      exit='exit'>
       <div className='border-r px-3'>
+
         <div className='py-2 flex gap-1 items-center text-gray-700 w-full relative'>
           {isSearchPanel ? <button className='rounded-full p-3 hover:bg-gray-100 focus:bg-gray-200 duration-200 relative'
             onClick={() => dispatch(FeaturesAction.setSearchPanel(false))}> <BiChevronLeft size={25} />
@@ -90,7 +97,7 @@ const Sidebar = () => {
           </div>
         }
       </div>
-    </>
+    </motion.div>
   )
 }
 
