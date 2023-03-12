@@ -39,6 +39,10 @@ export { default as Notifications } from './Settings/Notifications'
 export { default as StikersAndEmojis } from './Settings/StikersAndEmojis'
 export { default as WindowSettings } from './Settings/WindowSettings'
 
+// Video 
+export { default as MainVideo } from './VideoCalls/MainVideo'
+export { default as ModalVideo } from './VideoCalls/ModalVideo'
+
 
 
 export { default as useTitle } from '../Hooks/useTitle'

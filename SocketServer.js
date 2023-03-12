@@ -51,6 +51,15 @@ const SocketServer = (socket) => {
                 .emit("TypingtoClient", { sender, receiver, chatId, status });
         }
     });
+    socket.on("callUser", ({ receiver, signalData, sender, name }) => {
+        console.log(receiver, signalData, sender, name )
+        socket.to(receiver)
+            .emit("callUser", { signal: signalData, sender, name });
+    });
+
+    socket.on("answerCall", (data) => {
+        socket.to(data.to).emit("callAccepted", data.signal)
+    });
 
     socket.on('like', ({ sender, receiver, reactionType, post }) => {
         handler(sender, receiver, { type: 'react', reactionType, post });

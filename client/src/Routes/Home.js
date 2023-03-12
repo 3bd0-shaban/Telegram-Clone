@@ -20,7 +20,7 @@ const Home = () => {
   return (
     <>
       <div className='container px-0 max-w-[105rem] h-screen overflow-hidden md:border-r md:border-l md:shadow-sm '>
-        <div className='grid grid-cols-4 h-full'>
+        <div className='grid grid-cols-4 h-full overflow-hidden'>
           {(!MobileView || (!id)) &&
             <div className='col-span-4 lg:col-span-1 h-full'>
               <AnimatePresence>

@@ -1,5 +1,5 @@
 import { apiSlice } from '../ApiSlice';
-import getSocket from '../SocketRTK';
+import getSocket from '../../Utils/SocketConnect';
 export const NotifiesApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         GetNotifies: builder.query({

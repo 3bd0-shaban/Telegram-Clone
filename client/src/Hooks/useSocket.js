@@ -1,4 +1,4 @@
-import SocketContext from "../Utils/SocketContext";
+import SocketContext from "../Utils/PeerContext";
 import { useContext } from "react";
 
 const useSocket = () => {

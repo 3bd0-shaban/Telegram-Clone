@@ -67,10 +67,10 @@ const InfinteScrollableChat = ({ userById, id, image, isLoading }) => {
                         </div>
                     }
                     endMessage={
-                        <div className='flex justify-center my-5 text-lg font-semibold'>
+                        <div className='flex justify-center my-5 mt-[60px] text-lg font-semibold'>
                             <p>You see it all</p>
                         </div>}
-                    height={MobileView ? (window.innerHeight - 80) : (window.innerHeight - 130)}
+                    height={MobileView ? (window.innerHeight - 80) : (window.innerHeight - 75)}
                     className='hideScrollBar flex flex-col-reverse container max-w-[50rem]'
                     scrollableTarget="scrollableDiv"
                 >

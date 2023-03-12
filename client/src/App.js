@@ -1,11 +1,11 @@
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { ROLES } from './Config/Roles';
-import { AnimatePresence } from 'framer-motion';
+// import { AnimatePresence } from 'framer-motion';
 import { SignIn, RequireAuth, Layout, PersistLogin, NotFounded, Home, ConfirmNumber, SetName } from './Components/Exports'
 function App() {
   const location = useLocation();
   return (
-    <AnimatePresence>
+    // <AnimatePresence>
       <Routes location={location} key={location.pathname}>
         <Route path='/' element={<Layout />}>
           <Route path='signin' element={<SignIn />} />
@@ -15,14 +15,14 @@ function App() {
             <Route path='notfound' element={<NotFounded />} />
             <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
               <Route index path='/' element={<Home />} />
+
               <Route path=':username/message/:id' element={<Home />} />
               <Route path='/user/:id' element={<Home />} />
-
             </Route>
           </Route>
         </Route>
       </Routes>
-    </AnimatePresence>
+    // </AnimatePresence>
   );
 }
 

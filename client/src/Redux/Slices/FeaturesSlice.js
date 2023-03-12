@@ -14,6 +14,8 @@ const FeaturesSlice = createSlice({
         isStikersandEmoji: false,
         isDevices: false,
         isLanguage: false,
+        isVideo: false,
+        isVideoModal: false,
     },
     reducers: {
         ShowDrobdownMore(state) {
@@ -51,6 +53,12 @@ const FeaturesSlice = createSlice({
         },
         setIsLanguage(state) {
             state.isLanguage = !state.isLanguage
+        },
+        setIsVideo(state) {
+            state.isVideo = !state.isVideo
+        },
+        setIsVideoModal(state) {
+            state.isVideoModal = !state.isVideoModal
         }
     },
 
