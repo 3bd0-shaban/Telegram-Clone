@@ -49,12 +49,12 @@ const SignIn = () => {
               <div className="relative">
                 <input type="text" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border
                   border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" onChange={handleChange} value={inputs.country} name='country' placeholder=" " />
-                <label className="floating-input">Country</label>
+                <label className="floating-label">Country</label>
               </div>
               <div className="relative">
                 <input type="email" onChange={handleChange} value={inputs.email} name='email' className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border
                   border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                <label className="floating-input">Phone Number</label>
+                <label className="floating-label">Phone Number</label>
               </div>
             </div>
             <div className='flex justify-start px-5 py-5 '>

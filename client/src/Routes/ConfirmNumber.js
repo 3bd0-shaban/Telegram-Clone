@@ -26,10 +26,10 @@ const ConfirmNumber = () => {
         const { code } = inputs;
         const data = { email, country, code }
         try {
-            const { accessToken } = await VerifyEmail(data).unwrap()
-            dispatch(setCredentials({ accessToken }));
+            const { accessToken, user } = await VerifyEmail(data).unwrap()
+            dispatch(setCredentials({ accessToken, user }));
             setInputs({ code: '' });
-            navigate('/full-name')
+            navigate(!user.firstname ? '/full-name' : '/')
         } catch (error) {
             console.log(error)
         }
