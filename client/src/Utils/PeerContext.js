@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useEffect, useRef, useState } from 'react';
 import getSocket from './SocketConnect';
 import Peer from 'simple-peer';
 import { useSelector } from 'react-redux';
@@ -8,41 +8,54 @@ const PeerContext = createContext({});
 
 export const PeerProvider = ({ children }) => {
     const socket = getSocket();
-    const userInfo =useSelector(selectCurrentUser)
+    const userInfo = useSelector(selectCurrentUser)
     const [callAccepted, setCallAccepted] = useState(false);
+    const [isVideoCalling, setIsVideoCalling] = useState(false);
     const [callEnded, setCallEnded] = useState(false);
+    const [isMyCam, setIsMyCam] = useState(true);
     const [stream, setStream] = useState();
-    const [name, setName] = useState('');
-    const [call, setCall] = useState({});
-    const [me, setMe] = useState('');
-
+    const [acceptorName, setAcceptorName] = useState('');
+    const [callingInfo, setCallingInfo] = useState({});
     const myVideo = useRef();
     const userVideo = useRef();
     const connectionRef = useRef();
 
-
     useEffect(() => {
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-            .then((currentStream) => {
-                setStream(currentStream);
-
-                myVideo.current.srcObject = currentStream;
-            });
-
-        socket.on('me', (id) => setMe(id));
-
-        socket.on('callUser', ({ from, name: callerName, signal }) => {
-            setCall({ isReceivingCall: true, from, name: callerName, signal });
+        socket.on('callUser', ({ from, to, callerName, acceptorName, signal }) => {
+            setIsVideoCalling(true)
+            setCallingInfo({ from, to, callerName, acceptorName, signal });
+            console.log('calling......')
         });
-    }, []);
-    const callUser = (id) => {
+
+        if (isVideoCalling) {
+            navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                .then((currentStream) => {
+                    setStream(currentStream);
+                    if (myVideo.current) {
+                        myVideo.current.srcObject = currentStream;
+                    }
+                    // myVideo.current.srcObject = currentStream;
+                })
+                .catch((error) => {
+                    console.error('Error getting media stream:', error);
+                    setIsVideoCalling(false);
+                });
+
+        }
+
+    }, [socket, isVideoCalling]);
+    const callUser = ({ id, acceptorName }) => {
+
         const peer = new Peer({ initiator: true, trickle: false, stream });
 
         peer.on('signal', (data) => {
-            socket.emit('callUser', { receiver: id, signalData: data, sender: userInfo?._id, name });
+            socket.emit('callUser', { receiver: id, signalData: data, sender: userInfo?._id, callerName: `${userInfo?.firstname} ${userInfo?.lastname}`, acceptorName });
+            setAcceptorName(acceptorName)
+            setIsVideoCalling(true)
         });
 
         peer.on('stream', (currentStream) => {
+            console.log(currentStream)
             userVideo.current.srcObject = currentStream;
         });
 
@@ -61,14 +74,15 @@ export const PeerProvider = ({ children }) => {
         const peer = new Peer({ initiator: false, trickle: false, stream });
 
         peer.on('signal', (data) => {
-            socket.emit('answerCall', { signal: data, to: call.from });
+            socket.emit('answerCall', { signal: data, from: callingInfo.from, to: callingInfo.to });
         });
 
         peer.on('stream', (currentStream) => {
+            console.log('onaswer', userVideo.current)
             userVideo.current.srcObject = currentStream;
         });
 
-        peer.signal(call.signal);
+        peer.signal(callingInfo.signal);
 
         connectionRef.current = peer;
     };
@@ -84,23 +98,23 @@ export const PeerProvider = ({ children }) => {
 
 
     return <PeerContext.Provider value={{
-        call,
+        callingInfo,
         callAccepted,
         myVideo,
         userVideo,
         stream,
-        name,
+        acceptorName,
         callUser,
-        setName,
+        setCallingInfo,
         callEnded,
-        me,
         leaveCall,
         answerCall,
-    }}>{children}</PeerContext.Provider>;
+        isVideoCalling,
+        setIsVideoCalling,
+        setIsMyCam,
+        isMyCam,
+    }}>{children}
+    </PeerContext.Provider>;
 };
 
-export const useSocket = () => {
-    const socket = useContext(PeerContext);
-    return socket;
-};
 export default PeerContext;

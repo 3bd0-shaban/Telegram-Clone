@@ -1,17 +1,15 @@
-import React, { useContext } from 'react'
 import { motion } from 'framer-motion';
 import AnimModal from './../../Animation/AnimModal';
 import { useDispatch } from 'react-redux';
 import { FeaturesAction } from '../../Redux/Slices/FeaturesSlice';
-import PeerContext from '../../Utils/PeerContext';
-import { BsSquare, BsX, BsMicFill, BsEasel2 } from 'react-icons/bs';
+import { BsX, BsMicFill, BsEasel2 } from 'react-icons/bs';
 import { IoGridOutline, IoVideocamOutline } from 'react-icons/io5';
 import { MdOutlineCallEnd } from 'react-icons/md';
+import { usePeer } from '../Exports';
 
 const ModalVideo = () => {
     const dispatch = useDispatch();
-    const { callAccepted, name, setName, callEnded, leaveCall, stream, myVideo } = useContext(PeerContext);
-
+    const { callEnded, isMyCam, userVideo, stream, setIsMyCam, leaveCall, myVideo } = usePeer();
     return (
         <>
             <motion.div
@@ -38,14 +36,25 @@ const ModalVideo = () => {
                                     onClick={() => dispatch(FeaturesAction.setIsVideoModal(false))}><BsX /></button>
                                 <button><IoGridOutline /></button>
                             </div>
+                            {/* <video playsInline muted ref={myVideo} autoPlay className='w-full h-full object-cover' /> */}
+
                             {stream && (
-                                <video playsInline muted ref={myVideo} autoPlay className='w-full h-full object-cover' />
+                                <div>
+                                    <video playsInline muted ref={userVideo} autoPlay className='w-full h-full object-cover' />
+                                    <h2>fi</h2>
+                                </div>
+                            )}
+                            {isMyCam && !callEnded && (
+                                <video playsInline muted ref={myVideo} autoPlay className='w-[20%] h-[20%] absolute right-0 bottom-0 object-cover' />
                             )}
                             <div className='flex gap-5 justify-center absolute bottom-24 inset-x-0'>
                                 <button className='rounded-full h-14 w-14 bg-white text-black flex justify-center items-center'><IoVideocamOutline size={25} /></button>
                                 <button className='rounded-full h-14 w-14 bg-white text-black flex justify-center items-center'><BsEasel2 size={25} /></button>
                                 <button className='rounded-full h-14 w-14 bg-white text-black/50 flex justify-center items-center'><BsMicFill size={25} /></button>
-                                <button className='rounded-full h-14 w-14 bg-red-600 flex justify-center items-center'><MdOutlineCallEnd size={25} /></button>
+                                <button onClick={() => {
+                                    leaveCall();
+                                    setIsMyCam();
+                                }} className='rounded-full h-14 w-14 bg-red-600 flex justify-center items-center'><MdOutlineCallEnd size={25} /></button>
                             </div>
                         </div>
                     </div>

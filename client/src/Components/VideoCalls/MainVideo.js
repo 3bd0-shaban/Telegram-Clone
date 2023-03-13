@@ -4,11 +4,12 @@ import { MdOutlineCallEnd } from 'react-icons/md';
 import { FeaturesAction } from './../../Redux/Slices/FeaturesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import ModalVideo from './ModalVideo';
+import { usePeer } from '../Exports';
 
 const MainVideo = ({ userById }) => {
     const dispatch = useDispatch();
     const { isVideoModal } = useSelector(state => state.Features);
-
+    const { acceptorName, callingInfo } = usePeer();
     return (
         <>
             {isVideoModal && <ModalVideo />}
@@ -19,8 +20,11 @@ const MainVideo = ({ userById }) => {
                     <BsMicFill size={20} />
                     <h3 className='font-semibold'>Ringing ...</h3>
                 </div>
-                <h3 className='text-lg font-gray-500 font-semibold'>{`${userById?.firstname} ${userById?.lastname}`}</h3>
-                <MdOutlineCallEnd size={25} />
+                <h3 className='text-lg font-gray-500 font-semibold'>{callingInfo.callerName || acceptorName}</h3>
+
+                <div>
+                    <button><MdOutlineCallEnd size={25} /></button>
+                </div>
             </div>
         </>
     )

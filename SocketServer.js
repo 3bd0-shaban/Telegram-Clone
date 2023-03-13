@@ -51,22 +51,22 @@ const SocketServer = (socket) => {
                 .emit("TypingtoClient", { sender, receiver, chatId, status });
         }
     });
-    socket.on("callUser", ({ receiver, signalData, sender, name }) => {
-        console.log(receiver, signalData, sender, name )
-        socket.to(receiver)
-            .emit("callUser", { signal: signalData, sender, name });
+    socket.on("callUser", ({ receiver, signalData, sender, callerName, acceptorName  }) => {
+        const user = getUser(receiver);
+        // console.log({ receiver, sender, callerName, acceptorName  })
+        if (user) {
+            socket.to(user.socketId)
+                .emit("callUser", { signal: signalData, to: sender, from: receiver, callerName, acceptorName });
+        }
     });
 
-    socket.on("answerCall", (data) => {
-        socket.to(data.to).emit("callAccepted", data.signal)
-    });
-
-    socket.on('like', ({ sender, receiver, reactionType, post }) => {
-        handler(sender, receiver, { type: 'react', reactionType, post });
-    });
-
-    socket.on('comment', ({ sender, receiver, post }) => {
-        handler(sender, receiver, { type: 'comment', post });
+    socket.on("answerCall", ({ signal, to, from }) => {
+        console.log({ signal, to, from })
+        const user = getUser(to);
+        if (user) {
+            socket.to(user.socketId)
+                .emit("callAccepted", signal)
+        }
     });
 
     socket.on('disconnect', () => {

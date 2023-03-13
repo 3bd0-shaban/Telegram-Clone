@@ -24,6 +24,7 @@ export const AuthApi = apiSlice.injectEndpoints({
                     const socket = getSocket()
                     socket.on("connect", () => {
                         socket.emit("join", userId);
+                        console.log('connected')
                     });
                 } catch (err) {
                     console.log(err)
@@ -48,9 +49,11 @@ export const AuthApi = apiSlice.injectEndpoints({
                         })
                     );
                     let userId = result?.data?.user?._id;
+                    console.log(userId)
                     const socket = getSocket()
                     socket.on("connect", () => {
                         socket.emit("join", userId);
+                        console.log('connected')
                     });
                 } catch (err) {
                     // do nothing
@@ -78,7 +81,6 @@ export const AuthApi = apiSlice.injectEndpoints({
                     setTimeout(() => {
                         dispatch(apiSlice.util.resetApiState())
                         localStorage.removeItem('persist')
-                        localStorage.removeItem('id')
                     }, 1000)
                 } catch (err) {
                     console.log(err)

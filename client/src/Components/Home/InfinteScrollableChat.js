@@ -7,9 +7,7 @@ import { ImSpinner3 } from 'react-icons/im';
 import { useBreakpoint, SkilMSGs } from '../Exports';
 
 const InfinteScrollableChat = ({ userById, id, image, isLoading }) => {
-    const breakpoint = useBreakpoint();
-    const MobileView = (breakpoint === 'xs' || breakpoint === 'sm' || breakpoint === 'md' || breakpoint === 'lg');
-
+    const { MobileView } = useBreakpoint();
     const ScrollRef = useRef();
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(1);
@@ -70,7 +68,7 @@ const InfinteScrollableChat = ({ userById, id, image, isLoading }) => {
                         <div className='flex justify-center my-5 mt-[60px] text-lg font-semibold'>
                             <p>You see it all</p>
                         </div>}
-                    height={MobileView ? (window.innerHeight - 80) : (window.innerHeight - 75)}
+                    height={MobileView ? (window.innerHeight - 85) : (window.innerHeight - 75)}
                     className='hideScrollBar flex flex-col-reverse container max-w-[50rem]'
                     scrollableTarget="scrollableDiv"
                 >

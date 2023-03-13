@@ -47,6 +47,7 @@ export { default as ModalVideo } from './VideoCalls/ModalVideo'
 
 export { default as useTitle } from '../Hooks/useTitle'
 export { default as useSocket } from '../Hooks/useSocket'
+export { default as usePeer } from '../Hooks/usePeer'
 export { default as usePersist } from '../Hooks/usePersist'
 export { default as useAuth } from '../Hooks/useAuth';
 export { default as useBreakpoint } from '../Hooks/useBreakpoint';

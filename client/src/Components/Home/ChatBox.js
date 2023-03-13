@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useGetUserByIdQuery } from '../../Redux/APIs/UserApi'
-import { CoversationCTRL, Emoji, InfinteScrollableChat, MainVideo } from '../Exports'
+import { CoversationCTRL, Emoji, InfinteScrollableChat, MainVideo, usePeer } from '../Exports'
 import { useNewMessageMutation } from '../../Redux/APIs/MessageApi'
 import { motion } from 'framer-motion';
 import AnimDropdown from '../../Animation/AnimDropdown'
@@ -17,20 +17,19 @@ import { BiChevronLeft } from 'react-icons/bi'
 import getSocket from '../../Utils/SocketConnect'
 import { IoVideocamOutline } from 'react-icons/io5'
 import { FeaturesAction } from './../../Redux/Slices/FeaturesSlice';
-import PeerContext from '../../Utils/PeerContext';
-import { PeerProvider } from './../../Utils/PeerContext';
+import { MdOutlineCallEnd } from 'react-icons/md';
 const ChatBox = ({ setSelected }) => {
     Scrolldown();
     const { username, id } = useParams();
     const { data: userById, error } = useGetUserByIdQuery(username) || {};
     const [MewMessage, { isLoading }] = useNewMessageMutation() || {};
-    const { me, callAccepted, name, setName, callEnded, leaveCall, callUser } = useContext(PeerContext);
+    const { callUser, isVideoCalling, answerCall } = usePeer();
     const [msg, setMSG] = useState('');
     const [image, setImage] = useState();
     const [details, setDetails] = useState(false);
     const [isOnline, setIsOnline] = useState(false);
     const userInfo = useSelector(selectCurrentUser);
-    const { isVideo } = useSelector(state => state.Features);
+    // const { isVideo } = useSelector(state => state.Features);
     const [isPikerVisiable, setIsPikerVisable] = useState(false);
     const dispatch = useDispatch();
     const socket = getSocket();
@@ -70,16 +69,12 @@ const ChatBox = ({ setSelected }) => {
         }
         // eslint-disable-next-line 
     }, [image]);
-
     return (
         details ? <CoversationCTRL userById={userById} setDetails={setDetails} details={details} id={id} setSelected={setSelected} /> :
             <div className='h-full w-full'>
                 <div className='absolute top-0 bg-white w-full flex border-b justify-between'>
                     <div className='w-full h-full'>
-                        {isVideo &&
-                            <PeerProvider>
-                                <MainVideo userById={userById} />
-                            </PeerProvider>}
+                        {isVideoCalling && <MainVideo userById={userById} />}
                         <div className='w-full flex py-1 justify-between items-center px-2 lg:px-5'>
                             <div className='flex gap-3 items-center'>
                                 <div className='flex gap-2 items-center'>
@@ -97,13 +92,15 @@ const ChatBox = ({ setSelected }) => {
                             <div className='flex gap-5 text-2xl'>
                                 <button
                                     onClick={() => {
-                                        callUser(userById?._id)
+                                        callUser({ id: userById?._id, acceptorName: `${userById?.firstname} ${userById?.lastname}` })
                                         dispatch(FeaturesAction.setIsVideo(true));
-                                        dispatch(FeaturesAction.setIsVideoModal(true))
+                                        dispatch(FeaturesAction.setIsVideoModal(true));
                                     }}
                                 >
                                     <IoVideocamOutline />
                                 </button>
+                                <button onClick={answerCall}><MdOutlineCallEnd size={25} /></button>
+
                                 <BsBellSlash />
                                 <FiSearch />
                                 <RxDotsVertical />
