@@ -1,7 +1,7 @@
 import express from 'express';
 import { auth } from '../Middlewares/Auth.js'
-import { NewGroup } from './../Controllers/GroupCTRL.js';
+import { NewChannel } from './../Controllers/ChannelCTRL.js';
 const router = express.Router();
 
-router.post('/', auth, NewGroup)
+router.post('/', auth, NewChannel)
 export default router

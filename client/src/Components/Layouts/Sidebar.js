@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { ChatApi, useUserChatsQuery } from '../../Redux/APIs/ChatApi';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { SingleChat } from '../Exports'
+import { SingleChat, FloatingBtn, DrobDownMore } from '../Exports'
 import { FeaturesAction } from './../../Redux/Slices/FeaturesSlice';
 import { AiOutlineMenu } from 'react-icons/ai';
-import DrobDownMore from './DrobDownMore';
 import SearchPanel from './SearchPanel';
 import { BiChevronLeft } from 'react-icons/bi';
 import { motion } from 'framer-motion';
@@ -45,10 +44,11 @@ const Sidebar = () => {
 
   return (
     <motion.div
-      variants={AnimSlideRight}
+      // variants={AnimSlideRight}
       initial='initial'
       animate='animate'
-      exit='exit'>
+      exit='exit'
+      className='h-screen'>
       <div className='border-r px-3'>
 
         <div className='py-2 flex gap-1 items-center text-gray-700 w-full relative'>
@@ -70,7 +70,7 @@ const Sidebar = () => {
         </div>
       </div>
       <hr />
-      <div className='h-[calc(100vh-3.5rem)] overflow-hidden'>
+      <div className='h-[calc(100vh-4.5rem)] overflow-hidden'>
         {isSearchPanel ? <SearchPanel keyword={keyword} /> :
           <div className='overflow-y-scroll hideScrollBar border-r h-full pt-2'>
             {isFetching ?
@@ -84,11 +84,12 @@ const Sidebar = () => {
                   next={fetchMore}
                   hasMore={hasMore}
                   // loader={<h4>Loading...</h4>}
-                  className='overflow-y-scroll !h-full hideScrollBar mt-10 lg:mt-0'
+                  className='overflow-y-scroll !h-full hideScrollBar relative mt-10 lg:mt-0'
                 >
                   {Chats?.map(chat => (
-                    <div key={chat?._id}>
+                    <div key={chat?._id} >
                       <SingleChat chat={chat} username={username} />
+                        <FloatingBtn />
                     </div>
                   ))}
                 </InfiniteScroll>

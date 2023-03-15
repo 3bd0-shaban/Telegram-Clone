@@ -25,7 +25,6 @@ export const ChatApi = apiSlice.injectEndpoints({
                     totalCount: Number(apiResponse.length)
                 };
             },
-            providesTags: ['Message'],
             async onCacheEntryAdded(
                 args,
                 { cacheEntryRemoved, updateCachedData, cacheDataLoaded, getState }
@@ -79,13 +78,12 @@ export const ChatApi = apiSlice.injectEndpoints({
             },
         }),
 
-        // SingleChat: builder.query({
-        //     query: (id) => ({
-        //         url: `/api/chat/${id}`,
-        //         method: 'GET',
-        //     }),
-        //     providesTags: ['Chat', 'User'],
-        // }),
+        SingleChat: builder.query({
+            query: (id) => ({
+                url: `/api/chat/${id}`,
+                method: 'GET',
+            }),
+        }),
 
     }),
 });
@@ -93,5 +91,5 @@ export const ChatApi = apiSlice.injectEndpoints({
 export const {
     useNewChatMutation,
     useUserChatsQuery,
-    // useSingleChatQuery,
+    useSingleChatQuery,
 } = ChatApi;

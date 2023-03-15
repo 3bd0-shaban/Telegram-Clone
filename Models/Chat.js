@@ -5,11 +5,11 @@ const chatSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Users',
         }],
-        lastMSG:{
-            type:String
-        }
+        lastMSG: {
+            type: String
+        },
     },
-    { timestamps: true, minimize: false }
+    { timestamps: true }
 );
 const Chat = mongoose.model('Chat', chatSchema);
 export default Chat;

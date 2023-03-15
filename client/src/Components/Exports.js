@@ -4,10 +4,17 @@ export { default as SetName } from '../Routes/SetName';
 export { default as Home } from '../Routes/Home';
 export { default as Sidebar } from './Layouts/Sidebar';
 export { default as RippleBtn } from './Layouts/RippleBtn';
-export { default as DrobDownMore } from './Layouts/DrobDownMore';
 // export { default as Conversation } from './Layouts/Conversation';
 export { default as LoadingScreen } from './Layouts/LoadingScreen';
+export { default as UplaodIcon } from './Layouts/UplaodIcon';
 export { default as Emoji } from './Layouts/Emoji';
+
+export { default as FloatingBtn } from './FloatingBTN/FloatingBtn';
+export { default as CreateNewChannel } from './FloatingBTN/CreateNewChannel';
+export { default as DrobDownMore } from './FloatingBTN/DrobDownMore';
+export { default as CreateNewGroup } from './FloatingBTN/CreateNewGroup';
+export { default as SelectContacts } from './FloatingBTN/SelectContacts';
+
 
 
 //////////////////////Utils////////////////////////////////

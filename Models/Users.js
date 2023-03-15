@@ -30,6 +30,9 @@ const usersSchema = new mongoose.Schema(
         otp: {
             type: String,
         },
+        color:{
+            type:String,
+        },
         roles: {
             type: Array,
             default: ['user']

@@ -33,14 +33,20 @@ export const Get_ALL = asyncHandler(async (req, res, next) => {
             lastMSG: { $ne: null }
         }), req.query)
         .Pagination(resultperpage)
-
     const Chats = await features.query
         .populate('members', 'username avatar firstname lastname')
         .sort('-updatedAt')
+    for (let i = 0; i < Chats.length; i++) {
+        if (Chats[i].members && Chats[i].members.length > 2) {
+            delete Chats[i].members;
+        }
+    }
     return res.json(Chats)
 });
 
 export const Get_Single_Chat = asyncHandler(async (req, res, next) => {
-    const SingleChat = await Chat.findById(req.params.id)
-    return res.json(SingleChat)
+    const singleChat = await Chat.findById(req.params.id)
+        .populate('members', 'username avatar firstname lastname')
+    const totalMembers = singleChat.members?.length
+    return res.status(200).json({ singleChat, totalMembers })
 });

@@ -43,10 +43,17 @@ const WindowSettings = () => {
         initial='initial'
         animate='animate'
         exit='exit'
-        className='border-r h-screen'>
+        className='border-r h-screen select-none'>
         <div className='p-2 flex justify-between gap-1 items-center text-gray-700 w-full relative'>
           <div className='flex items-center gap-2'>
-            <button onClick={() => dispatch(FeaturesAction.setIsSettingsWin(true))}><BiChevronsLeft size={20} /></button>
+            <button
+              onClick={() => {
+                dispatch(FeaturesAction.setIsSettingsWin(true));
+                dispatch(FeaturesAction.setIsSideBarChats(false));
+              }}
+            >
+              <BiChevronsLeft size={20} />
+            </button>
             <h3 className='text-lg font-medium'>Settings</h3>
           </div>
           <div className='flex items-center gap-2'>
@@ -62,9 +69,9 @@ const WindowSettings = () => {
           </div>
 
         </div><hr />
-        <div>
+        <div className='select-none'>
           <div className='relative'>
-            <img src={userInfo?.avatar[0]?.url} className='h-72 object-cover w-full' alt='' />
+            <img draggable={false} src={userInfo?.avatar[0]?.url} className='h-72 object-cover w-full' alt='' />
             <div className='absolute px-5 bottom-5 text-white font-medium'>
               <h4>{`${userInfo?.firstname} ${userInfo?.lastname}`}</h4>
               <p className='text-sm text-gray-400'>Online</p>
@@ -76,7 +83,7 @@ const WindowSettings = () => {
             <CartInfo Icon={<BsInfoCircle size={25} />} Value={userInfo?.bio || ' '} Title='BIO' />
           </div>
         </div><hr />
-        <div className='p-3'>
+        <div className='p-3 select-none'>
           <CartSettingTitle Icon={<BsBell size={25} />} Title='Notoification And Sounds' />
           <CartSettingTitle Icon={<BsDatabaseAdd size={25} />} Title='Data And Storage' />
           <CartSettingTitle Icon={<BsLock size={25} />} Title='Privacy And Security' />

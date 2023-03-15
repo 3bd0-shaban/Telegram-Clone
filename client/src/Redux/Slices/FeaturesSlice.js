@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 const FeaturesSlice = createSlice({
     name: "Features",
     initialState: {
+        isSideBarChats: true,
         DrobdownMore: false,
         isSearchPanel: false,
         isSettingsWin: false,
@@ -16,8 +17,16 @@ const FeaturesSlice = createSlice({
         isLanguage: false,
         isVideo: false,
         isVideoModal: false,
+        //Floating BTN
+        isFloatingMenu: false,
+        isCreateChannel: false,
+        isCreateGroup: false,
+        isSelectContact: false,
     },
     reducers: {
+        setIsSideBarChats(state) {
+            state.isSideBarChats = !state.isSideBarChats;
+        },
         ShowDrobdownMore(state) {
             state.DrobdownMore = !state.DrobdownMore;
         },
@@ -59,6 +68,19 @@ const FeaturesSlice = createSlice({
         },
         setIsVideoModal(state) {
             state.isVideoModal = !state.isVideoModal
+        },
+        //Set Floasting icon functions
+        setIsFloatingMenu(state) {
+            state.isFloatingMenu = !state.isFloatingMenu
+        },
+        setIsCreateChannel(state) {
+            state.isCreateChannel = !state.isCreateChannel
+        },
+        setISCreateGroup(state) {
+            state.isCreateGroup = !state.isCreateGroup
+        },
+        setIsSelcetContact(state) {
+            state.isSelectContact = !state.isSelectContact
         }
     },
 

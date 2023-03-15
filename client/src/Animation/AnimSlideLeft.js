@@ -9,7 +9,7 @@ const AnimSlideLeft = {
         transition: { duration: 0.4 }
     },
     exit: {
-        x: -250,
+        x: "-100vw",
         opacity: 0,
         transition: { ease: 'easeInOut' }
     }

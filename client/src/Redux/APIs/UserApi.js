@@ -26,13 +26,11 @@ export const UserApi = apiSlice.injectEndpoints({
                 method: 'PUT',
                 body: data,
             }),
-            invalidatesTags: ['User'],
         }),
         getUserById: builder.query({
             query: (username) => ({
                 url: `/api/user/get/${username}`,
             }),
-            providesTags: ['User', 'UserFollow'],
         }),
         setName: builder.mutation({
             query: (data) => ({
@@ -40,7 +38,6 @@ export const UserApi = apiSlice.injectEndpoints({
                 method: 'PUT',
                 body: data,
             }),
-            invalidatesTags: ['User'],
         }),
         updateUserInfo: builder.mutation({
             query: (data) => ({
@@ -48,7 +45,6 @@ export const UserApi = apiSlice.injectEndpoints({
                 method: 'PUT',
                 body: data,
             }),
-            invalidatesTags: ['User'],
         }),
         Block: builder.mutation({
             query: (id) => ({

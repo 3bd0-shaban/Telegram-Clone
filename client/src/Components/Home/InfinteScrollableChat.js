@@ -13,7 +13,7 @@ const InfinteScrollableChat = ({ userById, id, image, isLoading }) => {
     const [page, setPage] = useState(1);
     const dispatch = useDispatch();
     const { data, isLoading: loadingMSGs, isError, error } = useGetMessagesQuery({ id }, {
-        refetchOnMountOrArgChange: true,
+        // refetchOnMountOrArgChange: true,
     });
     const { MSGs, totalCount, typing } = data || {}
     useEffect(() => {
