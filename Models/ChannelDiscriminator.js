@@ -9,29 +9,12 @@ const ChannelDiscriminator = Chat.discriminator(
                 ref: 'User',
                 required: true
             },
-            Admins: [
-                {
-                    type: mongoose.Schema.ObjectId,
-                    ref: 'User'
-                }
-            ],
             color: {
                 type: String,
-            },
-            Icon: {
-                public_id: {
-                    type: String,
-                },
-                url: {
-                    type: String,
-                },
             },
             channelName: {
                 type: String,
                 required: true,
-            },
-            info: {
-                type: String,
             },
         },
         { discriminatorKey: 'kind' }

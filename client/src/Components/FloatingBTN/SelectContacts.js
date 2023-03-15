@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion';
 import AnimSlideLeft from './../../Animation/AnimSlideLeft';
-import { UplaodIcon } from '../Exports';
+// import { UplaodIcon } from '../Exports';
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { FeaturesAction } from '../../Redux/Slices/FeaturesSlice';
@@ -40,7 +40,6 @@ const SelectContacts = () => {
       lastname: 'shaban',
     }
   ]
-  console.log(contactsAdded)
   const CantactCart = ({ contact }) => {
     const [isAdded, setIsAdded] = useState(false);
     useEffect(() => {

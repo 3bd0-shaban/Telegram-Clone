@@ -34,7 +34,7 @@ const FloatingBtn = () => {
                         <BsPen size={23} />
                     </div>
                     {isFloatingMenu &&
-                        <div className='absolute z-30 bottom-16 right-0 shadow-[2ox_2px_2px_2px] drop-shadow-lg select-none rounded-lg bg-[rgb(255,255,255,.9)]
+                        <div className='absolute z-30 bottom-16 right-0 shadow shadow-gray-200   select-none rounded-lg bg-[rgb(255,255,255,.9)]
                             backdrop-blur-xl text-md font-semibold w-[12rem] p-1 text-gray-700'>
                             <BTNFloatingFeatures onClickEvent={() => dispatch(FeaturesAction.setIsCreateChannel(false))} Icon={<BsMegaphone />} Title='New Channel' />
                             <BTNFloatingFeatures onClickEvent={() => dispatch(FeaturesAction.setIsSelcetContact(false))} Icon={<BsPeople />} Title='New Group' />

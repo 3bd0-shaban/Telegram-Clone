@@ -8,6 +8,23 @@ const chatSchema = new mongoose.Schema(
         lastMSG: {
             type: String
         },
+        Admins: [
+            {
+                type: mongoose.Schema.ObjectId,
+                ref: 'User'
+            }
+        ],
+        Icon: {
+            public_id: {
+                type: String,
+            },
+            url: {
+                type: String,
+            },
+        },
+        info: {
+            type: String,
+        },
     },
     { timestamps: true }
 );

@@ -24,7 +24,6 @@ export const AuthApi = apiSlice.injectEndpoints({
                     const socket = getSocket()
                     socket.on("connect", () => {
                         socket.emit("join", userId);
-                        console.log('connected')
                     });
                 } catch (err) {
                     console.log(err)
@@ -53,7 +52,6 @@ export const AuthApi = apiSlice.injectEndpoints({
                     const socket = getSocket()
                     socket.on("connect", () => {
                         socket.emit("join", userId);
-                        console.log('connected')
                     });
                 } catch (err) {
                     // do nothing

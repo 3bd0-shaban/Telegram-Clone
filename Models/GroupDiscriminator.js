@@ -8,21 +8,12 @@ const GroupDiscriminator = Chat.discriminator(
                 type: mongoose.Schema.ObjectId,
                 ref: 'User',
             },
-            Admins: [
-                {
-                    type: mongoose.Schema.ObjectId,
-                    ref: 'User'
-                }
-            ],
             groupName: {
                 type: String,
                 required: true,
             },
             color:{
                 type:String,
-            },
-            info: {
-                type: String,
             },
             privacy: {
                 type: String,
@@ -40,14 +31,6 @@ const GroupDiscriminator = Chat.discriminator(
                     ref: 'Message'
                 }
             ],
-            Icon: {
-                public_id: {
-                    type: String,
-                },
-                url: {
-                    type: String,
-                },
-            },
             Permissions: {
                 sendMessages: {
                     type: Boolean,

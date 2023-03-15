@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { CoversationCTRL, Emoji, InfinteScrollableChat, MainVideo, usePeer } from '../Exports'
 import { useNewMessageMutation } from '../../Redux/APIs/MessageApi'
 import { motion } from 'framer-motion';
 import AnimDropdown from '../../Animation/AnimDropdown'
-import { useSelector, useDispatch } from 'react-redux';
-import { selectCurrentUser } from '../../Redux/Slices/UserSlice'
 import { Scrolldown } from '../../Helpers/Scroll'
 import { BsBellSlash, BsEmojiSmile, BsMicFill } from 'react-icons/bs';
 import { IoMdPaperPlane } from 'react-icons/io'
@@ -17,23 +15,18 @@ import getSocket from '../../Utils/SocketConnect'
 import { IoVideocamOutline } from 'react-icons/io5'
 import { FeaturesAction } from './../../Redux/Slices/FeaturesSlice';
 import { MdOutlineCallEnd } from 'react-icons/md';
-import { useSingleChatQuery } from '../../Redux/APIs/ChatApi'
-const ChatBox = ({ setSelected }) => {
+import { useChat } from '../../Context/ChatContext';
+import { useDispatch } from 'react-redux';
+const ChatBox = ({ setSelected, setIsDetails, isDetails, singleChat, userInfo, id, totalMembers }) => {
     Scrolldown();
-    const { id } = useParams();
-    // const { data: userById, error } = useGetUserByIdQuery(username) || {};
-    const { data } = useSingleChatQuery(id) || {};
-    const { singleChat, totalMembers } = data || {};
+
     const [MewMessage, { isLoading }] = useNewMessageMutation() || {};
     const { callUser, isVideoCalling, answerCall } = usePeer();
+    const { isChannel, isGroup, userById, isChat } = useChat();
     const [msg, setMSG] = useState('');
     const [image, setImage] = useState();
     const [details, setDetails] = useState(false);
-    const [userById, setUserById] = useState({});
-    const [isChannel, setIsChannel] = useState(false);
-    const [isGroup, setIsGroup] = useState(false);
     const [isOnline, setIsOnline] = useState(false);
-    const userInfo = useSelector(selectCurrentUser);
     // const { isVideo } = useSelector(state => state.Features);
     const [isPikerVisiable, setIsPikerVisable] = useState(false);
     const dispatch = useDispatch();
@@ -75,21 +68,10 @@ const ChatBox = ({ setSelected }) => {
         // eslint-disable-next-line 
     }, [image]);
 
-    useEffect(() => {
-        if (singleChat?.__t === 'Channel') {
-            return setIsChannel(true)
-        }
-        if (singleChat?.__t === 'Group') {
-            return setIsGroup(true)
-        }
-    }, [singleChat]);
 
-    useEffect(() => {
-        const friend = singleChat?.members?.find(p => p._id !== userInfo?._id);
-        setUserById(friend);
-    }, [singleChat, userInfo, id]);
-    console.log(isChannel, 'channel')
-    console.log(isGroup, 'group')
+    console.log(isChat, 'isChat')
+    // console.log(isChannel, 'channel')
+    // console.log(isGroup, 'group')
     return (
         details ? <CoversationCTRL userById={userById} setDetails={setDetails} details={details} id={id} setSelected={setSelected} /> :
             <div className='h-full w-full select-none'>
@@ -100,10 +82,12 @@ const ChatBox = ({ setSelected }) => {
                             <div className='flex gap-2 items-center'>
                                 <Link to='/' onClick={() => setSelected(false)} className='block lg:hidden'><BiChevronLeft size={30} /></Link>
                                 {(singleChat?.Icon?.url || userById?.avatar) ?
-                                    <div className="w-12 h-12 ">
+                                    <div className="w-12 h-12 "
+                                        onClick={() => setIsDetails(!isDetails)}>
                                         <img className="rounded-full object-cover" src={(isChannel || isGroup) ? singleChat?.Icon?.url : userById?.avatar} alt='' />
                                     </div> :
                                     <div
+                                        onClick={() => setIsDetails(!isDetails)}
                                         className={`w-12 h-12 rounded-full text-2xl flex items-center justify-center text-white font-bold shadow-[.2px_.2px_3px_1px] shadow-[${singleChat?.color}]`}
                                         style={{ backgroundColor: `${singleChat?.color}` }}>
 
@@ -153,7 +137,7 @@ const ChatBox = ({ setSelected }) => {
                         {/* {isTyping && <p className='mx-3'>typing ....</p>} */}
 
                         <div className='absolute bottom-4 inset-x-0'>
-                            <form onSubmit={NewMSG} className='container max-w-3xl flex items-center gap-3 justify-center'>
+                            <form onSubmit={NewMSG} className='container max-w-3xl duration-300 flex items-center gap-3 justify-center'>
                                 <>
                                     <div className='relative w-full'>
                                         <input className='outline-none border rounded-full py-5 w-full px-12 placeholder:font-semibold'

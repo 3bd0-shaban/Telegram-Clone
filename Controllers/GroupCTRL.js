@@ -10,9 +10,28 @@ export const NewGroup = asyncHandler(async (req, res, next) => {
         '#7f1d1d', '#18181b', '#7c2d12', '#78350f', '#713f12', '#365314', '#1e3a8a', '#312e81', '#4c1d95', '#831843', '#881337'
     ];
     const color = ColorsArray[Math.floor(Math.random() * ColorsArray.length)];
-
-    await new Chat({
-        members: [...req.body.members, req.user.id], color
+    if (!channelName) {
+        return next(new ErrorHandler('Channel Name is required'), 400)
+    }
+    if (req.body.members.length < 1) {
+        return next(new ErrorHandler('Must add one cantact at list'), 400)
+    }
+    let result;
+    if (icon) {
+        result = await cloudinary.uploader.upload(icon, {
+            folder: "Telegram/ChatsIcon",
+            transformation: [
+                { width: 500, quality: 'auto' }
+            ],
+            resource_type: 'auto'
+        });
+    }
+    await new GroupDiscriminator({
+        members: [...req.body.members, req.user.id], color, groupName, info, admin: [req.user.id],
+        Icon: {
+            public_id: result?.public_id,
+            url: result?.secure_url,
+        }
     }).save()
         .then((chat) => {
             return res.json(chat);

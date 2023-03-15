@@ -1,5 +1,6 @@
 import { asyncHandler } from '../Middlewares/asyncHandler.js';
 import ChannelDiscriminator from '../Models/ChannelDiscriminator.js';
+import Chat from '../Models/Chat.js';
 import ErrorHandler from '../Utils/ErrorHandler.js';
 import cloudinary from './../Utils/cloudinary.js';
 
@@ -25,7 +26,7 @@ export const NewChannel = asyncHandler(async (req, res, next) => {
         });
     }
     await new ChannelDiscriminator({
-        members: [req.user.id], isChannel: true, owner: req.user.id, channelName, info, color,
+        members: [req.user.id], isChannel: true, owner: req.user.id, channelName, info, color, admin: [req.user.id],
         Icon: {
             public_id: result?.public_id,
             url: result?.secure_url,
@@ -38,3 +39,64 @@ export const NewChannel = asyncHandler(async (req, res, next) => {
             return next(new ErrorHandler(err.message, 404));
         })
 });
+
+export const AddUserstoChannel = asyncHandler(async (req, res, next) => {
+    const members = [...req.body.members]
+    const newMembers = await Chat.findOneAndUpdate({ _id: req.params.id },
+        {
+            members: { $push: members }
+        },
+        { new: true });
+    return res.json(newMembers);
+});
+
+export const MembertoAdmin = asyncHandler(async (req, res, next) => {
+    const Admins = req.body.admin
+    const newAdmin = await Chat.findOneAndUpdate({ _id: req.params.id },
+        {
+            Admins: { $push: Admins }
+        },
+        { new: true });
+    return res.json(newAdmin);
+});
+
+export const RemoveAdmin = asyncHandler(async (req, res, next) => {
+    const Admin = req.body.admin
+    const newAdmin = await Chat.findOneAndUpdate({ _id: req.params.id },
+        {
+            Admins: { $pull: Admin }
+        },
+        { new: true });
+    return res.json({ msg: 'Removed !' });
+});
+
+export const RemoveMember = asyncHandler(async (req, res, next) => {
+    const member = req.body.member
+    const newAdmin = await Chat.findOneAndUpdate({ _id: req.params.id },
+        {
+            members: { $pull: member }
+        },
+        { new: true });
+    return res.json({ msg: 'Removed !' });
+});
+
+export const ChangePrivacy = asyncHandler(async (req, res, next) => {
+    const privacy = req.body.privacy
+    const newAdmin = await Chat.findOneAndUpdate({ _id: req.params.id },
+        {
+            Privacy: { $set: privacy }
+        },
+        { new: true });
+    return res.json(newAdmin);
+});
+
+export const History = asyncHandler(async (req, res, next) => {
+    const history = req.body.history
+    const newAdmin = await Chat.findOneAndUpdate({ _id: req.params.id },
+        {
+            Privacy: { $set: history }
+        },
+        { new: true });
+    return res.json(newAdmin);
+});
+

@@ -9,7 +9,9 @@ import { AiOutlineMenu } from 'react-icons/ai';
 import SearchPanel from './SearchPanel';
 import { BiChevronLeft } from 'react-icons/bi';
 import { motion } from 'framer-motion';
-import AnimSlideRight from '../../Animation/AnimSlideRight';
+// import AnimSlideRight from '../../Animation/AnimSlideRight';
+
+import { ChatProvider } from './../../Context/ChatContext';
 const Sidebar = () => {
   const [page, setPage] = useState(1);
   // eslint-disable-next-line 
@@ -88,8 +90,11 @@ const Sidebar = () => {
                 >
                   {Chats?.map(chat => (
                     <div key={chat?._id} >
-                      <SingleChat chat={chat} username={username} />
+                      <ChatProvider singleChat={chat}>
+                        <SingleChat chat={chat} username={username} />
                         <FloatingBtn />
+                      </ChatProvider>
+
                     </div>
                   ))}
                 </InfiniteScroll>
