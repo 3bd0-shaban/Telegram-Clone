@@ -6,8 +6,13 @@ import GroupDiscriminator from './../Models/GroupDiscriminator.js';
 
 export const NewGroup = asyncHandler(async (req, res, next) => {
     // const users = [...req.body.members]
+    const ColorsArray = [
+        '#7f1d1d', '#18181b', '#7c2d12', '#78350f', '#713f12', '#365314', '#1e3a8a', '#312e81', '#4c1d95', '#831843', '#881337'
+    ];
+    const color = ColorsArray[Math.floor(Math.random() * ColorsArray.length)];
+
     await new Chat({
-        members: [...req.body.members, req.user.id]
+        members: [...req.body.members, req.user.id], color
     }).save()
         .then((chat) => {
             return res.json(chat);

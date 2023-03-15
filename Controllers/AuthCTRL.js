@@ -23,12 +23,17 @@ export const SignIn = asyncHandler(async (req, res) => {
 export const activateEmail = asyncHandler(async (req, res, next) => {
 
     const { email, code, country } = req.body;
+    const ColorsArray = [
+        '#7f1d1d', '#18181b', '#7c2d12', '#78350f', '#713f12', '#365314', '#1e3a8a', '#312e81', '#4c1d95', '#831843', '#881337'
+    ];
+    const color = ColorsArray[Math.floor(Math.random() * ColorsArray.length)];
+
     if (parseInt(req.app.locals.OTP) === parseInt(code)) {
         const user = await Users.findOne({ email })
         // req.app.locals.OTP = null;
         if (!user) {
             const username = email.split('@')[0]
-            const save = await new Users({ email, country, otp: req.app.locals.OTP, username }).save()
+            const save = await new Users({ email, country, otp: req.app.locals.OTP, username, color }).save()
             const accessToken = createAccessToken({ id: save.id, roles: save.roles });
             const refresh_Token = createRefreshToken({ id: save.id, roles: save.roles });
             res.cookie('Jwt', refresh_Token, {
