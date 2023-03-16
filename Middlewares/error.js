@@ -6,11 +6,11 @@ const errorMiddleware = (err, req, res, next) => {
     message: err.message || "Internal Server Error",
   }
 
-  if (err.name === "TypeError") {
-    const message = `Resource not found. Invalid: you may forget to specify await`;
-    err = new ErrorHandler(message, 400);
-    console.log(err)
-  }
+  // if (err.name === "TypeError") {
+  //   const message = `Resource not found. Invalid: you may forget to specify await`;
+  //   err = new ErrorHandler(message, 400);
+  //   console.log(err)
+  // }
 
   // Wrong Mongodb Id error
   if (err.name === "CastError") {

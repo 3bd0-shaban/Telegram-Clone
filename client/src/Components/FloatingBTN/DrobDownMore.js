@@ -29,7 +29,7 @@ const DrobDownMore = () => {
         <>
             <div onClick={() => dispatch(FeaturesAction.ShowDrobdownMore(false))} className="fixed inset-0 z-20"></div>
             <div className='absolute z-30 top-[4rem] left-2 shadow-gray-200 drop-shadow-lg
-                 rounded-lg bg-[rgb(255,255,255,.9)] backdrop-blur-xl text-md font-semibold py-3 px-2 w-[19rem]'>
+                 rounded-lg bg-[rgb(255,255,255,.95)] backdrop-blur-xl text-md font-semibold py-3 px-2 w-[19rem]'>
                 <DropItem Icon={<BsBookmarks />} Title={'Saved Messages'} />
                 <DropItem Icon={<BsJournals />} Title={'Archeved Chats'} />
                 <DropItem Icon={<BsPeople />} Title={'Contacts'} />

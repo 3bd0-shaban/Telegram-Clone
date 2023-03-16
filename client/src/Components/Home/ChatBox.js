@@ -20,22 +20,15 @@ const ChatBox = ({ setSelected, setIsDetails, isDetails, userInfo, id, data }) =
     const { singleChat, totalMembers, isContact } = data || {};
     const [MewMessage, { isLoading }] = useNewMessageMutation() || {};
     const { isVideoCalling, answerCall } = usePeer();
-    const { isChannel, isGroup, userById, isChat } = useChat();
+    const { isChannel, isGroup, userById, isChat, isOnline } = useChat();
     const [msg, setMSG] = useState('');
     const [image, setImage] = useState();
     const [details, setDetails] = useState(false);
-    const [isOnline, setIsOnline] = useState(false);
     // const { isVideo } = useSelector(state => state.Features);
     const [isPikerVisiable, setIsPikerVisable] = useState(false);
     const { isChatDropdown } = useSelector(state => state.Features)
     const dispatch = useDispatch();
     const socket = getSocket();
-    useEffect(() => {
-        socket?.on("getusers", (data) => {
-            const online = data?.some(user => user.userId === userById?._id)
-            online && setIsOnline(true)
-        });
-    }, [socket, userById, id])
 
     const NewMSG = (e) => {
         if (!image) {
@@ -67,10 +60,6 @@ const ChatBox = ({ setSelected, setIsDetails, isDetails, userInfo, id, data }) =
         // eslint-disable-next-line 
     }, [image]);
 
-
-    console.log(isChat, 'isChat')
-    // console.log(isChannel, 'channel')
-    // console.log(isGroup, 'group')
     return (
         details ? <CoversationCTRL userById={userById} setDetails={setDetails} details={details} id={id} setSelected={setSelected} /> :
             <div className='h-screen w-full select-none relative'>
@@ -79,16 +68,29 @@ const ChatBox = ({ setSelected, setIsDetails, isDetails, userInfo, id, data }) =
                         {isVideoCalling && <MainVideo userById={userById} />}
                         <div className='w-full flex py-1 justify-between items-center px-2 lg:px-5'>
                             <div className='flex gap-2 items-center'>
-                                <Link to='/' onClick={() => setSelected(false)} className='block lg:hidden'><BiChevronLeft size={30} /></Link>
+                                <Link to='/' onClick={() => setSelected(false)} className='block lg:hidden'>
+                                    <BiChevronLeft size={30} />
+                                </Link>
                                 {(singleChat?.Icon?.url || userById?.avatar) ?
-                                    <div className="w-12 h-12 "
+                                    <div className="w-12 h-12 cursor-pointer"
                                         onClick={() => setIsDetails(!isDetails)}>
-                                        <img className="rounded-full object-cover" src={(isChannel || isGroup) ? singleChat?.Icon?.url : userById?.avatar} alt='' />
+                                        <img
+                                            className="rounded-full object-cover" src={
+                                                (isChannel || isGroup) ?
+                                                    singleChat?.Icon?.url : userById?.avatar[0]?.url}
+                                            alt=''
+                                        />
                                     </div> :
                                     <div
                                         onClick={() => setIsDetails(!isDetails)}
-                                        className={`w-12 h-12 rounded-full text-2xl flex items-center justify-center text-white font-bold shadow-[.2px_.2px_3px_1px] shadow-[${singleChat?.color}]`}
-                                        style={{ backgroundColor: `${singleChat?.color}` }}>
+                                        className={`w-12 h-12 rounded-full text-2xl flex items-center justify-center
+                                         text-white font-bold shadow-[.2px_.2px_3px_1px] shadow-[${singleChat?.color}]`}
+                                        style={{
+                                            backgroundColor: `${singleChat?.color}`,
+                                            '--tw-shadow-color': ` ${singleChat?.color}`,
+                                            '--tw-shadow': 'var(--tw-shadow-colored)',
+                                            boxShadow: 'var(--tw-shadow)'
+                                        }}>
 
                                         {
                                             isChannel ? `${singleChat?.channelName?.charAt(0)}`
@@ -97,15 +99,21 @@ const ChatBox = ({ setSelected, setIsDetails, isDetails, userInfo, id, data }) =
                                         }
                                     </div>
                                 }
-                                <div>
+                                <div className='cursor-pointer'
+                                    onClick={() => setIsDetails(!isDetails)}
+                                >
                                     <p className='lg:text-lg text-gray-600 font-semibold'>
-                                        {isChannel ? `${singleChat?.channelName}` : `${userById?.firstname} ${userById?.lastname}`}
+                                        {isChannel ? `${singleChat?.channelName}` : isGroup ? `${singleChat?.groupName}` :
+                                            isChat && `${userById?.firstname} ${userById?.lastname}`}
                                     </p>
                                     {(isChannel || isGroup) && <p className='text-sm text-gray-400'>{totalMembers} subscriber</p>}
-                                    {isOnline && <div className='font-light text-sm text-gray-400 flex items-end gap-1'>
-                                        <p>Active Now</p>
-                                        <span className='w-2 h-2 mb-0.5 bg-green-500 rounded-full'></span>
-                                    </div>}
+                                    {(isOnline && isChat) ?
+                                        <div className='font-light text-sm text-gray-400 flex items-end gap-1'>
+                                            <p>Active Now</p>
+                                            <span className='w-2 h-2 mb-0.5 bg-green-500 rounded-full'></span>
+                                        </div> : isChat &&
+                                        <span className='text-gray-400 text-sm'>Last seen recently</span>
+                                    }
                                 </div>
                             </div>
                             <div className='flex gap-5 text-2xl'>

@@ -12,6 +12,7 @@ import GroupRouter from './Routes/GroupRouter.js';
 import MessageRouter from './Routes/MessageRouter.js';
 import ChatRouter from './Routes/ChatRouter.js';
 import ChannelRouter from './Routes/ChannelRouter.js';
+import ContactsRouter from './Routes/ContactsRouter.js';
 import AllowedOrigins from "./Origins.js";
 import SocketServer from "./SocketServer.js";
 import { createServer } from 'http';
@@ -75,5 +76,6 @@ app.use('/api/group', GroupRouter);
 app.use('/api/channel', ChannelRouter);
 app.use('/api/message', MessageRouter);
 app.use('/api/chat', ChatRouter);
+app.use('/api/contact', ContactsRouter);
 app.use(errorMiddleware);
 

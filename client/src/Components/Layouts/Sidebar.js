@@ -29,20 +29,18 @@ const Sidebar = () => {
   };
 
   useEffect(() => {
+    if (page > 1) {
+      dispatch(
+        ChatApi.endpoints.getMoreChats.initiate(page)
+      );
+    }
+  }, [page, dispatch]);
+
+  useEffect(() => {
     if (totalCount === 0) {
       setHasMore(false);
     }
   }, [totalCount, page]);
-
-  useEffect(() => {
-    if (page > 1) {
-      dispatch(
-        ChatApi.endpoints.getMoreChats.initiate({
-          page
-        })
-      );
-    }
-  }, [page, dispatch]);
 
   return (
     <motion.div
@@ -67,14 +65,14 @@ const Sidebar = () => {
           <input className='outline-none border rounded-full w- py-3 pl-3 w-full'
             onChange={(e) => setKeyword(e.target.value)}
             onFocus={() => dispatch(FeaturesAction.setSearchPanel(true))}
-            onBlur={() => dispatch(FeaturesAction.setSearchPanel(true))}
+            // onBlur={() => dispatch(FeaturesAction.setSearchPanel(true))}
             placeholder='Search' />
         </div>
       </div>
       <hr />
-      <div className='h-[calc(100vh-4.5rem)] overflow-hidden'>
+      <div className=' overflow-hidden'>
         {isSearchPanel ? <SearchPanel keyword={keyword} /> :
-          <div className='overflow-y-scroll hideScrollBar border-r h-full pt-2'>
+          <div className='border-r h-full pt-2'>
             {isFetching ?
               <div className='space-y-7 py-5'>
 
@@ -86,7 +84,7 @@ const Sidebar = () => {
                   next={fetchMore}
                   hasMore={hasMore}
                   // loader={<h4>Loading...</h4>}
-                  className='overflow-y-scroll !h-full hideScrollBar relative mt-10 lg:mt-0'
+                  className='overflow-y-scroll !h-[calc(100vh-4.5rem)] hideScrollBar relative mt-10 lg:mt-0'
                 >
                   {Chats?.map(chat => (
                     <div key={chat?._id} >

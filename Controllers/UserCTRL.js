@@ -12,8 +12,8 @@ export const UserInfo = asyncHandler(async (req, res) => {
 });
 
 export const SearchUser = asyncHandler(async (req, res) => {
-    const { email } = req.query
-    const features = new Features(Users.find({ email }).limit(5), req.query).search()
+    const resultperpage = 10;
+    const features = new Features(Users.find(), req.query).Pagination(resultperpage).search()
     const users = await features.query
     if (!users) return next(new ErrorHandler("User Not Founded !", 404));
     res.json(users);
@@ -52,7 +52,7 @@ export const SetFullname = asyncHandler(async (req, res, next) => {
     }
     const user = await Users.findByIdAndUpdate({ _id: req.user.id },
         req.body, { new: true });
-    return res.json({user});
+    return res.json({ user });
 
 });
 export const updateProfilePic = asyncHandler(async (req, res, next) => {
@@ -75,10 +75,6 @@ export const updateProfilePic = asyncHandler(async (req, res, next) => {
 
 });
 
-export const AllUsers = asyncHandler(async (req, res) => {
-    const user = await Users.find();
-    res.json(user);
-});
 export const LogOut = asyncHandler(async (req, res) => {
     res.clearCookie('token', { path: '/' });
     res.json({ msg: 'Loged Out' });

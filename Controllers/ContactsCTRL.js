@@ -2,17 +2,36 @@ import Contacts from "../Models/Contacts.js";
 import ErrorHandler from './../Utils/errorHandler.js';
 import { asyncHandler } from '../Middlewares/asyncHandler.js';
 export const newContact = asyncHandler(async (req, res, next) => {
-    const isAlreadyinContact = await Contacts.findOne({
-        $in: [
-            { Contacts: { $elemMatch: { $eq: req.body.contactId } } },
-        ],
-    })
-
-    if (isAlreadyinContact) {
-        return next(new ErrorHandler('Already in your contact', 400));
+    const { firstname, lastname, contactId, username, email } = req.body;
+    const iscontact = await Contacts.findOne({ user: req.user.id })
+    // const isAlreadyinContact = await Contacts.findOne({
+    //     Contacts: { $elemMatch: { contactId: req.body.contactId } },
+    // })
+    // if (isAlreadyinContact) {
+    //     return next(new ErrorHandler('Already in your contact', 400));
+    // }
+    console.log(req.body)
+    if (!firstname) {
+        return next(new ErrorHandler('firstname is required', 400));
     }
-    const contact = await Contacts.findOneAndUpdate({ user: req.user }, { Contacts: { $push: req.body.contactId } }, { new: true });
-    return res.json(contact)
+    if (iscontact) {
+        const contact = await Contacts.findOneAndUpdate({ user: req.user.id },
+            {
+                $push:
+                    { contacts: req.body }
+            },
+            { new: true });
+        return res.json(contact)
+    } else {
+        await new Contacts({ contacts: req.body, user: req.user.id })
+            .save()
+            .then(contact => {
+                return res.json(contact)
+            })
+            .then((error) => {
+                return next(new ErrorHandler(error.message, 400));
+            })
+    }
 });
 
 export const GetContacts = asyncHandler(async (req, res, next) => {

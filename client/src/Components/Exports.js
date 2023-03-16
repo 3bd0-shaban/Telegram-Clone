@@ -27,6 +27,8 @@ export { default as NotFounded } from '../Utils/NotFounded';
 
 //////////////////////Utils////////////////////////////////
 export { default as ChatBox } from './Home/ChatBox';
+export { default as ChatDetails } from './Home/ChatDetails';
+export { default as AddContact } from './Home/AddContact';
 export { default as CoversationCTRL } from './Home/CoversationCTRL';
 export { default as InfinteScrollableChat } from './Home/InfinteScrollableChat';
 export { default as Message } from './Home/Message';

@@ -54,8 +54,10 @@ export const ChatApi = apiSlice.injectEndpoints({
         }),
 
         getMoreChats: builder.query({
-            query: ({ page }) =>
-                `/api/chat/all?page=${page}`,
+            query: (page) => ({
+                url: `/api/chat/all?page=${page}`,
+                method: 'GET',
+            }),
             async onQueryStarted({ id }, { queryFulfilled, dispatch }) {
                 try {
 

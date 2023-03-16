@@ -44,7 +44,7 @@ const WindowSettings = () => {
         animate='animate'
         exit='exit'
         layoutId="underline"
-        className='border-r h-screen select-none'>
+        className='border-r h-screen overflow-y-scroll hideScrollBar select-none'>
         <div className='p-2 flex justify-between gap-1 items-center text-gray-700 w-full relative'>
           <div className='flex items-center gap-2'>
             <button
@@ -72,7 +72,11 @@ const WindowSettings = () => {
         </div><hr />
         <div className='select-none'>
           <div className='relative'>
-            <img draggable={false} src={userInfo?.avatar[0]?.url} className='h-72 object-cover w-full' alt='' />
+            {userInfo?.avatar[0]?.url ?
+              <img draggable={false} src={userInfo?.avatar[0]?.url} className='h-72 object-cover w-full' alt='' /> :
+              <div className='h-72 w-full' style={{backgroundColor:`${userInfo?.color}`}}></div>
+
+            }
             <div className='absolute px-5 bottom-5 text-white font-medium'>
               <h4>{`${userInfo?.firstname} ${userInfo?.lastname}`}</h4>
               <p className='text-sm text-gray-400'>Online</p>

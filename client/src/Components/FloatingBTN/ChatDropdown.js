@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom'
 import {
@@ -51,7 +50,10 @@ const ChatDropdown = ({ isContact, userById }) => {
                         dispatch(FeaturesAction.setIsSettingsWin(true));
                         dispatch(FeaturesAction.setIsSideBarChats(false));
                     }} />
-                {!isContact && <DropItem Icon={<BsPersonAdd />} Title={'Add to contacts'} />}
+                {!isContact && <DropItem Icon={<BsPersonAdd />} Title={'Add to contacts'}
+                    onClickEvent={() => dispatch(FeaturesAction.setIsNewContact(true))}
+                />}
+
                 <DropItem Icon={<BsLock />} Title={'Block user'} />
                 <div className='text-red-500'>
                     <DropItem Icon={<AiOutlineUsergroupDelete />} Title={'Delete Chat'} />

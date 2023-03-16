@@ -43,7 +43,7 @@ export const activateEmail = asyncHandler(async (req, res, next) => {
                 expires: new Date(Date.now() + 7 * 1000 * 60 * 60 * 24), // 7d
                 sameSite: 'none'
             });
-            return res.json({ msg: "Your email verified successfully", accessToken });
+            return res.json({ msg: "Your email verified successfully", user, accessToken });
         }
         const accessToken = createAccessToken({ id: user.id, roles: user.roles });
         const refresh_Token = createRefreshToken({ id: user.id, roles: user.roles });

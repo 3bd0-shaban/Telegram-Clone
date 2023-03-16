@@ -23,6 +23,7 @@ const FeaturesSlice = createSlice({
         isCreateChannel: false,
         isCreateGroup: false,
         isSelectContact: false,
+        isNewContact: false,
     },
     reducers: {
         setIsSideBarChats(state) {
@@ -85,6 +86,9 @@ const FeaturesSlice = createSlice({
         },
         setIsSelcetContact(state) {
             state.isSelectContact = !state.isSelectContact
+        },
+        setIsNewContact(state) {
+            state.isNewContact = !state.isNewContact
         }
     },
 

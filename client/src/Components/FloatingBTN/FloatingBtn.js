@@ -26,11 +26,11 @@ const FloatingBtn = () => {
     return (
         <>
 
-            <div className='absolute bottom-10 right-5'>
+            <div className='fixed bottom-10 right-5'>
                 <div className='relative'>
                     <div
                         onClick={() => dispatch(FeaturesAction.setIsFloatingMenu(!isFloatingMenu))}
-                        className='rounded-full w-14 h-14 flex justify-center cursor-pointer items-center bg-blue-500 text-white'>
+                        className='rounded-full w-14 h-14 flex justify-center cursor-pointer items-center shadow-[.2px_.2px_3px_1px] shadow-blue-500 bg-blue-500 text-white'>
                         <BsPen size={23} />
                     </div>
                     {isFloatingMenu &&

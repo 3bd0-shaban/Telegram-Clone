@@ -28,7 +28,14 @@ const CreateNewChannel = () => {
         const data = { channelName, info, icon };
         NewChannel(data).unwrap()
             .then(payload => {
-                navigate(`/channel/${payload?._id}`)
+                navigate(`/channel/${payload?._id}`);
+                dispatch(FeaturesAction.setIsCreateChannel(false));
+                dispatch(FeaturesAction.setIsSideBarChats(true));
+                setInputs({
+                    channelName: '',
+                    info: '',
+
+                })
             })
     }
 
@@ -38,7 +45,7 @@ const CreateNewChannel = () => {
                 variants={AnimSlideLeft}
                 initial='initial'
                 animate='animate'
-                exit='exit' className='border-r h-screen bg-white w-full'>
+                exit='exit' className='border-r h-screen relative bg-white w-full'>
                 <div className='py-5 pt-3 select-none'>
                     <div className='flex gap-3 px-5 py-2'>
                         <button className='text-gray-400'
@@ -82,7 +89,7 @@ const CreateNewChannel = () => {
                         <p className='text-sm text-gray-400'>You can provide an optional description for your channel.</p>
                         {isError && <p className='text-sm text-red-500 font-bold'> {error?.data?.msg}</p>}
                     </div>
-                    <div className='absolute bottom-10 right-5'>
+                    <div className='fixed bottom-10 right-5'>
                         <div className='relative'>
                             <button
                                 onClick={HandleNewChannel}
