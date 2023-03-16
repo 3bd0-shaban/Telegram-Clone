@@ -1,8 +1,8 @@
 import { createContext, useEffect, useRef, useState } from 'react';
-import getSocket from './SocketConnect';
+import getSocket from '../Utils/SocketConnect';
 import Peer from 'simple-peer';
 import { useSelector } from 'react-redux';
-import { selectCurrentUser } from './../Redux/Slices/UserSlice';
+import { selectCurrentUser } from '../Redux/Slices/UserSlice';
 
 const PeerContext = createContext({});
 

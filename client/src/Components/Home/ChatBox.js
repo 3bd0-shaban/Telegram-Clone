@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CoversationCTRL, Emoji, InfinteScrollableChat, MainVideo, usePeer } from '../Exports'
+import { CoversationCTRL, Emoji, InfinteScrollableChat, MainVideo, ChatDropdown, usePeer } from '../Exports'
 import { useNewMessageMutation } from '../../Redux/APIs/MessageApi'
 import { motion } from 'framer-motion';
 import AnimDropdown from '../../Animation/AnimDropdown'
 import { Scrolldown } from '../../Helpers/Scroll'
-import { BsBellSlash, BsEmojiSmile, BsMicFill } from 'react-icons/bs';
+import { BsBellSlash, BsEmojiSmile, BsMicFill, BsTelephoneOutbound } from 'react-icons/bs';
 import { IoMdPaperPlane } from 'react-icons/io'
 import { RiAttachment2 } from 'react-icons/ri'
 import { FiSearch } from 'react-icons/fi'
 import { RxDotsVertical } from 'react-icons/rx';
 import { BiChevronLeft } from 'react-icons/bi'
 import getSocket from '../../Utils/SocketConnect'
-import { IoVideocamOutline } from 'react-icons/io5'
 import { FeaturesAction } from './../../Redux/Slices/FeaturesSlice';
-import { MdOutlineCallEnd } from 'react-icons/md';
 import { useChat } from '../../Context/ChatContext';
-import { useDispatch } from 'react-redux';
-const ChatBox = ({ setSelected, setIsDetails, isDetails, singleChat, userInfo, id, totalMembers }) => {
+import { useDispatch, useSelector } from 'react-redux';
+const ChatBox = ({ setSelected, setIsDetails, isDetails, userInfo, id, data }) => {
     Scrolldown();
-
+    const { singleChat, totalMembers, isContact } = data || {};
     const [MewMessage, { isLoading }] = useNewMessageMutation() || {};
-    const { callUser, isVideoCalling, answerCall } = usePeer();
+    const { isVideoCalling, answerCall } = usePeer();
     const { isChannel, isGroup, userById, isChat } = useChat();
     const [msg, setMSG] = useState('');
     const [image, setImage] = useState();
@@ -29,6 +27,7 @@ const ChatBox = ({ setSelected, setIsDetails, isDetails, singleChat, userInfo, i
     const [isOnline, setIsOnline] = useState(false);
     // const { isVideo } = useSelector(state => state.Features);
     const [isPikerVisiable, setIsPikerVisable] = useState(false);
+    const { isChatDropdown } = useSelector(state => state.Features)
     const dispatch = useDispatch();
     const socket = getSocket();
     useEffect(() => {
@@ -74,7 +73,7 @@ const ChatBox = ({ setSelected, setIsDetails, isDetails, singleChat, userInfo, i
     // console.log(isGroup, 'group')
     return (
         details ? <CoversationCTRL userById={userById} setDetails={setDetails} details={details} id={id} setSelected={setSelected} /> :
-            <div className='h-full w-full select-none'>
+            <div className='h-screen w-full select-none relative'>
                 <div className='absolute top-0 bg-white w-full flex border-b justify-between'>
                     <div className='w-full h-full'>
                         {isVideoCalling && <MainVideo userById={userById} />}
@@ -110,20 +109,14 @@ const ChatBox = ({ setSelected, setIsDetails, isDetails, singleChat, userInfo, i
                                 </div>
                             </div>
                             <div className='flex gap-5 text-2xl'>
-                                <button
-                                    onClick={() => {
-                                        callUser({ id: userById?._id, acceptorName: `${userById?.firstname} ${userById?.lastname}` })
-                                        dispatch(FeaturesAction.setIsVideo(true));
-                                        dispatch(FeaturesAction.setIsVideoModal(true));
-                                    }}
-                                >
-                                    <IoVideocamOutline />
-                                </button>
-                                <button onClick={answerCall}><MdOutlineCallEnd size={25} /></button>
+                                <button onClick={answerCall}><BsTelephoneOutbound size={20} /></button>
 
                                 <BsBellSlash />
                                 <FiSearch />
-                                <RxDotsVertical />
+                                <button className='rounded-full hover:bg-gray-100 focus:bg-gray-200 duration-200 relative'
+                                    onClick={() => dispatch(FeaturesAction.setIsChatDropdown(true))}><RxDotsVertical size={25} />
+                                </button>
+                                {isChatDropdown && <ChatDropdown isContact={isContact} userById={userById} />}
                             </div>
                         </div>
                     </div>

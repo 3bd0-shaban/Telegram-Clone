@@ -9,7 +9,7 @@ import { AiOutlineMenu } from 'react-icons/ai';
 import SearchPanel from './SearchPanel';
 import { BiChevronLeft } from 'react-icons/bi';
 import { motion } from 'framer-motion';
-// import AnimSlideRight from '../../Animation/AnimSlideRight';
+import AnimSlideRight from '../../Animation/AnimSlideRight';
 
 import { ChatProvider } from './../../Context/ChatContext';
 const Sidebar = () => {
@@ -46,7 +46,7 @@ const Sidebar = () => {
 
   return (
     <motion.div
-      // variants={AnimSlideRight}
+      variants={AnimSlideRight}
       initial='initial'
       animate='animate'
       exit='exit'

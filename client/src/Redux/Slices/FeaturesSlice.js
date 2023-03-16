@@ -4,6 +4,7 @@ const FeaturesSlice = createSlice({
     initialState: {
         isSideBarChats: true,
         DrobdownMore: false,
+        isChatDropdown: false,
         isSearchPanel: false,
         isSettingsWin: false,
         isLogout: false,
@@ -29,6 +30,9 @@ const FeaturesSlice = createSlice({
         },
         ShowDrobdownMore(state) {
             state.DrobdownMore = !state.DrobdownMore;
+        },
+        setIsChatDropdown(state) {
+            state.isChatDropdown = !state.isChatDropdown;
         },
         setSearchPanel(state) {
             state.isSearchPanel = !state.isSearchPanel

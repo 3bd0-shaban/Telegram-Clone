@@ -12,6 +12,7 @@ export { default as Emoji } from './Layouts/Emoji';
 export { default as FloatingBtn } from './FloatingBTN/FloatingBtn';
 export { default as CreateNewChannel } from './FloatingBTN/CreateNewChannel';
 export { default as DrobDownMore } from './FloatingBTN/DrobDownMore';
+export { default as ChatDropdown } from './FloatingBTN/ChatDropdown';
 export { default as CreateNewGroup } from './FloatingBTN/CreateNewGroup';
 export { default as SelectContacts } from './FloatingBTN/SelectContacts';
 
@@ -53,7 +54,6 @@ export { default as ModalVideo } from './VideoCalls/ModalVideo'
 
 
 export { default as useTitle } from '../Hooks/useTitle'
-export { default as useSocket } from '../Hooks/useSocket'
 export { default as usePeer } from '../Hooks/usePeer'
 export { default as usePersist } from '../Hooks/usePersist'
 export { default as useAuth } from '../Hooks/useAuth';

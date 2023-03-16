@@ -13,9 +13,14 @@ const Home = () => {
   const { username, id } = useParams();
   const { MobileView } = useBreakpoint();
   const [isDetails, setIsDetails] = useState(false);
+  const [skip, setSkip] = useState(true);
   const { isSettingsWin, isSideBarChats, isCreateChannel, isCreateGroup, isSelectContact } = useSelector(state => state.Features);
-  const { data } = useSingleChatQuery(id) || {};
-  const { singleChat, totalMembers } = data || {};
+  useEffect(() => {
+    if (id) {
+      setSkip(false)
+    }
+  }, [id]);
+  const { data } = useSingleChatQuery(id, { skip });
   useEffect(() => {
     if (id) {
       return setSelected(true)
@@ -24,15 +29,15 @@ const Home = () => {
   }, [id, username]);
   return (
     <>
-      <div className='container px-0 max-w-[105rem] h-screen overflow- md:border-r md:border-l md:shadow-sm '>
-        <div className='grid grid-cols-4 h-full overflow-'>
+      <div className='container px-0 max-w-[105rem] h-screen overflow-hidden md:border-r md:border-l md:shadow-sm '>
+        <div className='grid grid-cols-4 h-full overflow-hidden'>
           {(!MobileView || (!id)) &&
             <div className='col-span-4 lg:col-span-1 h-full'>
               {isSideBarChats &&
-                  <Sidebar userInfo={userInfo} />
+                <Sidebar userInfo={userInfo} />
 
               }
-              <AnimatePresence>
+              <AnimatePresence >
                 {isSettingsWin && <WindowSettings />}
               </AnimatePresence>
               <AnimatePresence>
@@ -46,8 +51,8 @@ const Home = () => {
           }
           <div className={`col-span-3 h-full duration-300 relative ${MobileView && '!col-span-4'} ${isDetails && '!col-span-2'}`}>
             {selected ?
-              <ChatProvider singleChat={singleChat} id={id}>
-                <ChatBox setSelected={setSelected} setIsDetails={setIsDetails} isDetails={isDetails} singleChat={singleChat} userInfo={userInfo} totalMembers={totalMembers} id={id} />
+              <ChatProvider singleChat={data?.singleChat} id={id}>
+                <ChatBox setSelected={setSelected} setIsDetails={setIsDetails} isDetails={isDetails} data={data} userInfo={userInfo} id={id} />
               </ChatProvider>
 
               :

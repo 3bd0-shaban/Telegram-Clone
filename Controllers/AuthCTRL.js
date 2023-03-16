@@ -6,9 +6,9 @@ import Jwt from 'jsonwebtoken';
 import send_Email from '../Utils/sendEmail.js';
 
 
-export const SignIn = asyncHandler(async (req, res) => {
+export const SignIn = asyncHandler(async (req, res, next) => {
     const { email, country } = req.body;
-    if (!email) return res.status(400).json({ msg: 'Please fill all fields' });
+    if (!email) return next(new ErrorHandler("Please fill all fields!", 400));
     if (!validateEmail(email)) {
         return next(new ErrorHandler("Invailed Email !", 404));
     } else {

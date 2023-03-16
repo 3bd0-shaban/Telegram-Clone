@@ -5,7 +5,7 @@ import App from './App';
 import { Provider } from 'react-redux';
 import { Store } from './Redux/Store';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { PeerProvider } from './Utils/PeerContext';
+import { PeerProvider } from './Context/PeerContext';
 import PersistLogin from './Utils/PersistLogin';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

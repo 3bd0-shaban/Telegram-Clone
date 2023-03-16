@@ -3,6 +3,7 @@ import Chat from '../Models/Chat.js';
 import ErrorHandler from '../Utils/ErrorHandler.js';
 import Message from './../Models/Message.js';
 import Features from './../Utils/Features.js';
+import Contacts from './../Models/Contacts.js';
 
 export const New_Chat = asyncHandler(async (req, res, next) => {
     const isAlreadyinChat = await Chat.findOne({
@@ -47,6 +48,18 @@ export const Get_ALL = asyncHandler(async (req, res, next) => {
 export const Get_Single_Chat = asyncHandler(async (req, res, next) => {
     const singleChat = await Chat.findById(req.params.id)
         .populate('members', 'username avatar firstname lastname')
+
     const totalMembers = singleChat.members?.length
-    return res.status(200).json({ singleChat, totalMembers })
+    if (totalMembers > 2) {
+        delete singleChat.members;
+    }
+    const chatFriend = singleChat.members.filter(p => p._id === req.user.id);
+    let isContact;
+    const isExist = await Contacts.findOne({ user: req.user.id, contacts: chatFriend });
+    if (isExist) {
+        isContact = true;
+    } else {
+        isContact = false;
+    }
+    return res.status(200).json({ singleChat, totalMembers, isContact })
 });

@@ -43,6 +43,7 @@ const WindowSettings = () => {
         initial='initial'
         animate='animate'
         exit='exit'
+        layoutId="underline"
         className='border-r h-screen select-none'>
         <div className='p-2 flex justify-between gap-1 items-center text-gray-700 w-full relative'>
           <div className='flex items-center gap-2'>

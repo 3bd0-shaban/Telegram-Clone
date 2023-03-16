@@ -10,9 +10,11 @@ function App() {
         <Route path='full-name' element={<SetName />} />
         <Route path='notfound' element={<NotFounded />} />
         <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
-          {[':username/message/:id', 'channel/:id'].map((path, index) => (
-            <Route key={index} index path={path} element={<Home />} />
-          ))}
+          <Route index path='/' element={<Home />} />
+
+          <Route path=':username/message/:id' element={<Home />} />
+          <Route path='channel/:id' element={<Home />} />
+          <Route path='/user/:id' element={<Home />} />
         </Route>
       </Route>
     </Routes>
