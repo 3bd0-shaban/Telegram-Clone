@@ -4,8 +4,7 @@ import { useChat } from "../../Context/ChatContext";
 
 const SingleChat = ({ chat }) => {
     const { id } = useParams();
-    const { isChannel, isGroup, userById } = useChat();
-
+    const { isChannel, isGroup, isChat, userById } = useChat();
 
     return (
 
@@ -23,7 +22,7 @@ const SingleChat = ({ chat }) => {
                 <div>
                     {(chat?.Icon?.url || userById?.avatar) ?
                         <div className="w-16 h-16 ">
-                            <img className="rounded-full object-cover" src={(isChannel || isGroup) ? chat?.Icon?.url : userById?.avatar[0]?.url} alt='' />
+                            <img className="rounded-full object-cover" src={(isChannel || isGroup) ? chat?.Icon?.url : isChat && userById?.avatar[0]?.url} alt='' />
                         </div> :
                         <span
                             className={`w-16 h-16 rounded-full text-2xl flex items-center justify-center text-white font-bold shadow-[.2px_.2px_3px_1px] shadow-[#7c2d12]`}

@@ -106,7 +106,7 @@ const ChatBox = ({ setSelected, setIsDetails, isDetails, userInfo, id, data }) =
                                         {isChannel ? `${singleChat?.channelName}` : isGroup ? `${singleChat?.groupName}` :
                                             isChat && `${userById?.firstname} ${userById?.lastname}`}
                                     </p>
-                                    {(isChannel || isGroup) && <p className='text-sm text-gray-400'>{totalMembers} subscriber</p>}
+                                    {(isChannel || isGroup) && <p className='text-sm text-gray-400'>{`${totalMembers} ${isGroup ? 'member' : 'subscriber'}`}</p>}
                                     {(isOnline && isChat) ?
                                         <div className='font-light text-sm text-gray-400 flex items-end gap-1'>
                                             <p>Active Now</p>

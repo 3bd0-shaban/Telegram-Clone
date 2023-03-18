@@ -40,8 +40,9 @@ export const Get_ALL = asyncHandler(async (req, res, next) => {
 
 
     for (let i = 0; i < Chats.length; i++) {
-        if (Chats[i].members.length !== 2) {
-            Chats[i].members = []
+
+        if (Chats[i].__t == 'Group' || Chats[i].__t) {
+            Chats[i].members = [];
         }
 
         const chatFriend = Chats[i].members.filter(p => p._id == req.user.id);
@@ -51,11 +52,10 @@ export const Get_ALL = asyncHandler(async (req, res, next) => {
                 $elemMatch: { contactId: chatFriend }
             }
         });
-        console.log(isExist)
+        // console.log(isExist)
         if (isExist) {
-            console.log('dddddddddd')
             const mycontact = isExist[i].contacts.find(p => p.contactId == chatFriend[0].id);
-            console.log(isExist)
+            // console.log(isExist)
             // console.log(mycontact)
             Chats[i].members = []
             Chats[i].members.push(req.user)
@@ -70,11 +70,11 @@ export const Get_Single_Chat = asyncHandler(async (req, res, next) => {
         .populate('members', 'username email avatar firstname lastname')
 
     const totalMembers = singleChat.members?.length
-    if (totalMembers !== 2) {
+    if (singleChat.__t == 'Group' || singleChat.__t) {
         singleChat.members = [];
     }
     const chatFriend = singleChat.members.filter(p => p._id != req.user.id);
-    console.log(chatFriend)
+    // console.log(chatFriend)
     let isContact;
     const isExist = await Contacts.findOne({
         user: req.user.id, contacts:
@@ -83,6 +83,7 @@ export const Get_Single_Chat = asyncHandler(async (req, res, next) => {
         }
     });
     if (isExist) {
+        console.log('s')
         const mycontact = isExist.contacts.find(p => p.contactId == chatFriend[0].id)
         singleChat.members = []
         singleChat.members.push(req.user)
@@ -91,6 +92,6 @@ export const Get_Single_Chat = asyncHandler(async (req, res, next) => {
     } else {
         isContact = false;
     }
-    console.log(singleChat)
+    // console.log(singleChat)
     return res.status(200).json({ singleChat, totalMembers, isContact })
 });

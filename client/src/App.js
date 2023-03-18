@@ -14,6 +14,7 @@ function App() {
 
           <Route path=':username/message/:id' element={<Home />} />
           <Route path='channel/:id' element={<Home />} />
+          <Route path='group/:id' element={<Home />} />
           <Route path='/user/:id' element={<Home />} />
         </Route>
       </Route>

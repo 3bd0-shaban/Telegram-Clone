@@ -1,57 +1,54 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion';
 import AnimSlideLeft from './../../Animation/AnimSlideLeft';
-// import { UplaodIcon } from '../Exports';
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { FeaturesAction } from '../../Redux/Slices/FeaturesSlice';
-import RippleEffect from '../../Animation/Ripple';
+import { useGetContactsQuery } from '../../Redux/APIs/ContactsApi';
+import { setContacts } from '../../Redux/Slices/ContactsSlice';
 
 const SelectContacts = () => {
   const dispatch = useDispatch()
-  const [inputs, setInputs] = useState({
-    ChannelName: '',
-    des: '',
-
-  });
-  const [icon, setIcon] = useState('');
-
-
-  const handleChange = ({ currentTarget: input }) => {
-    setInputs({ ...inputs, [input.name]: input.value });
-  };
+  const { data } = useGetContactsQuery();
+  const { Contacts } = data || {};
+  const [contactsAdded, setContactsAdded] = useState([]);
+  const [error, setIsError] = useState('');
+  console.log(contactsAdded.length)
   const HandleNewChannel = () => {
+    try {
+      if (contactsAdded.length > 0) {
+        dispatch(setContacts(contactsAdded))
+        dispatch(FeaturesAction.setIsSelcetContact(false));
+        dispatch(FeaturesAction.setISCreateGroup(true));
+      } else {
+        setIsError('Add one contact al least')
+      }
+    } catch (error) {
 
-  }
-  const [contactsAdded, setContactsAdded] = useState([])
-  const Contacts = [
-    {
-      firstname: 'abdo',
-      lastname: 'shaban',
-      lastseen: '3 mintes ago'
-    },
-    {
-      firstname: 'abdo',
-      lastname: 'shaban',
-      lastseen: '3 mintes ago'
-    },
-    {
-      firstname: 'abdo',
-      lastname: 'shaban',
     }
-  ]
+  }
   const CantactCart = ({ contact }) => {
     const [isAdded, setIsAdded] = useState(false);
     useEffect(() => {
-      if (contactsAdded.some(p => p === contact)) {
+      if (contactsAdded?.some(p => p === contact)) {
         setIsAdded(true)
       }
-    }, [])
-    // console.log('contact is', contact)
+    }, [contact])
+    const handleAddContact = () => {
+      if (!isAdded) {
+        setContactsAdded([...contactsAdded, contact])
+      } else {
+        setContactsAdded(() => {
+          contactsAdded.filter(p => p._id !== contact?._id)
+        })
+      }
+    }
+
     return (
       <div key={contact._id} className='flex gap-5 items-center'>
         <div>
-          <input className='w-5 h-5 rounded-xl overflow-hidden' checked={isAdded} onChange={(e) => setContactsAdded([...contactsAdded, contact])} type='checkbox' />
+          <input className='w-5 h-5 rounded-xl overflow-hidden' checked={isAdded}
+            onChange={handleAddContact} type='checkbox' />
         </div>
         <div className='flex gap-2 items-center'>
           <img className='w-12 h-12 ' src={process.env.REACT_APP_DefaultIcon} alt='' />
@@ -72,15 +69,14 @@ const SelectContacts = () => {
       </div>
     )
   }
-
   return (
     <>
       <motion.div
         variants={AnimSlideLeft}
         initial='initial'
         animate='animate'
-        exit='exit' className='border-r h-screen overflow-y-scroll hideScrollBar bg-white w-full'>
-        <div className='py-5 pt-3 select-none'>
+        exit='exit' className='border-r h-screen relative overflow-y-scroll hideScrollBar bg-white'>
+        <div className='py-5 pt-3 relative h-full w-full select-none'>
           <div className='flex gap-3 px-5 py-2'>
             <button className='text-gray-400'
               onClick={() => {
@@ -98,11 +94,11 @@ const SelectContacts = () => {
 
           <div className='h-5 w-full bg-gray-100 shadow-inner shadow-gray-300'></div>
           <div className='p-5 lg:px-7 space-y-5'>
-            {Contacts?.map(contact => (
+            {Contacts?.contacts?.map(contact => (
               <CantactCart contact={contact} />
             ))}
           </div>
-          <RippleEffect />
+          {error && <p className='px-5 text-red-500'>{error}</p>}
           <div className='absolute bottom-10 right-5'>
             <div className='relative'>
               <div

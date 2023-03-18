@@ -65,7 +65,7 @@ const Home = () => {
           </div>
 
           <ChatProvider singleChat={data?.singleChat} id={id}>
-            {isDetails && <ChatDetails chat={data?.singleChat} setIsDetails={setIsDetails} />}
+            {isDetails && <ChatDetails chat={data?.singleChat} setIsDetails={setIsDetails} totalMembers={data?.totalMembers} />}
             {isNewContact && <AddContact chat={data?.singleChat} />}
           </ChatProvider>
         </div>

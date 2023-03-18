@@ -89,7 +89,7 @@ const CreateNewChannel = () => {
                         <p className='text-sm text-gray-400'>You can provide an optional description for your channel.</p>
                         {isError && <p className='text-sm text-red-500 font-bold'> {error?.data?.msg}</p>}
                     </div>
-                    <div className='fixed bottom-10 right-5'>
+                    <div className='absolute bottom-10 right-5'>
                         <div className='relative'>
                             <button
                                 onClick={HandleNewChannel}

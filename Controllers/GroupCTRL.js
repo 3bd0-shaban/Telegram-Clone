@@ -3,15 +3,17 @@ import Chat from '../Models/Chat.js';
 import ErrorHandler from '../Utils/ErrorHandler.js';
 import Features from './../Utils/Features.js';
 import GroupDiscriminator from './../Models/GroupDiscriminator.js';
+import cloudinary from './../Utils/cloudinary.js';
 
 export const NewGroup = asyncHandler(async (req, res, next) => {
     // const users = [...req.body.members]
+    const { groupName, icon } = req.body;
     const ColorsArray = [
         '#7f1d1d', '#18181b', '#7c2d12', '#78350f', '#713f12', '#365314', '#1e3a8a', '#312e81', '#4c1d95', '#831843', '#881337'
     ];
     const color = ColorsArray[Math.floor(Math.random() * ColorsArray.length)];
-    if (!channelName) {
-        return next(new ErrorHandler('Channel Name is required'), 400)
+    if (!groupName) {
+        return next(new ErrorHandler('Group Name is required'), 400)
     }
     if (req.body.members.length < 1) {
         return next(new ErrorHandler('Must add one cantact at list'), 400)
@@ -27,7 +29,7 @@ export const NewGroup = asyncHandler(async (req, res, next) => {
         });
     }
     await new GroupDiscriminator({
-        members: [...req.body.members, req.user.id], color, groupName, info, admin: [req.user.id],
+        members: [...req.body.members, req.user.id], color, groupName, admin: [req.user._id],
         Icon: {
             public_id: result?.public_id,
             url: result?.secure_url,

@@ -35,7 +35,7 @@ export const newContact = asyncHandler(async (req, res, next) => {
 });
 
 export const GetContacts = asyncHandler(async (req, res, next) => {
-    const contacts = await Contacts.find({ user: req.user.id })
+    const contacts = await Contacts.findOne({ user: req.user.id })
         .populate('contacts', 'username avatar firstname lastname')
     if (!contacts) {
         return next(new ErrorHandler('No Contacts founded', 400));
